@@ -5,25 +5,22 @@
 #include "setup.h"
 
 WiFiClientSecure wifiClientSecure;
-PubSubClient mqttClient(mqtt_broker_host, mqtt_broker_port, &callback, wifiClientSecure);
+PubSubClient mqttPubSubClient(mqtt_broker_host, mqtt_broker_port, &subscriptionCallback, wifiClientSecure);
 
 void setup() {
   Serial.begin(115200);
   delay(10);
-  setup_wifi();
+  connectToWifi();
   
   wifiClientSecure.setCACert(root_ca);
 }
 
 void loop() {
-    if (!mqttClient.connected()) {
-    reconnect();
-  }
-  mqttClient.loop();
-
+  ensureMqttConnection(mqttPubSubClient);
+  mqttPubSubClient.loop();
 }
 
-void setup_wifi() {
+void connectToWifi() {
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -41,28 +38,33 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
 }
 
-void reconnect() {
-  // Loop until we're reconnected
+void ensureMqttConnection(PubSubClient &mqttClient) {
+  if (!mqttClient.connected()) {
+    connectToMqttBroker(mqttClient);
+  }
+}
+
+void connectToMqttBroker(PubSubClient &mqttClient) {
   while (!mqttClient.connected()) {
     Serial.print("Attempting MQTT connection...");
-    // Attempt to connect
-    if (mqttClient.connect("GarageDoor")) {
+    
+    if (mqttClient.connect("garage-door-controller")) {
       Serial.println("connected");
-      // Once connected, publish an announcement...
-      mqttClient.publish("sensors","hello world");
-      // ... and resubscribe
-      mqttClient.subscribe("commands");
+      subscribeOnConnect(mqttClient);
     } else {
       Serial.print("failed, rc=");
       Serial.print(mqttClient.state());
-      Serial.println(" try again in 5 seconds");
-      // Wait 5 seconds before retrying
+      Serial.println(" trying again in 5 seconds");
       delay(5000);
     }
   }
 }
 
-void callback(char* topic, byte* message, unsigned int length) {
+void subscribeOnConnect(PubSubClient &mqttClient) {
+  mqttClient.subscribe("home/garage/door/trigger");
+}
+
+void subscriptionCallback(char* topic, byte* message, unsigned int length) {
   Serial.print("Message arrived on topic: ");
   Serial.print(topic);
   Serial.print(". Message: ");
