@@ -13,6 +13,10 @@ void setup() {
   connectToWifi();
   
   wifiClientSecure.setCACert(root_ca);
+
+  pinMode(door_open_magnetic_sensor_gpio, INPUT);
+  pinMode(door_closed_magnetic_sensor_gpio, INPUT);
+  pinMode(door_motor_relay_switch_gpio, OUTPUT);
 }
 
 void loop() {
@@ -61,7 +65,7 @@ void connectToMqttBroker(PubSubClient &mqttClient) {
 }
 
 void subscribeOnConnect(PubSubClient &mqttClient) {
-  mqttClient.subscribe("home/garage/door/trigger");
+  mqttClient.subscribe(mqtt_garage_door_trigger_topic);
 }
 
 void subscriptionCallback(char* topic, byte* message, unsigned int length) {
