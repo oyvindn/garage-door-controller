@@ -5,7 +5,7 @@
 #include "setup.h"
 
 WiFiClientSecure wifiClientSecure;
-PubSubClient mqttPubSubClient(mqtt_broker_host, mqtt_broker_port, &subscriptionCallback, wifiClientSecure);
+PubSubClient mqttPubSubClient(mqtt_broker_host, mqtt_broker_port, &mqttMessageReceivedCallback, wifiClientSecure);
 
 void setup() {
     Serial.begin(115200);
@@ -54,7 +54,9 @@ void connectToMqttBroker(PubSubClient &mqttClient) {
 
         if (mqttClient.connect("garage-door-controller")) {
             Serial.println("connected");
-            subscribeOnConnect(mqttClient);
+            mqttClient.subscribe(mqtt_garage_door_trigger_topic);
+            Serial.print("Subscribed to topic ");
+            Serial.println(mqtt_garage_door_trigger_topic);
         } else {
             Serial.print("failed, rc=");
             Serial.print(mqttClient.state());
@@ -64,11 +66,7 @@ void connectToMqttBroker(PubSubClient &mqttClient) {
     }
 }
 
-void subscribeOnConnect(PubSubClient &mqttClient) {
-    mqttClient.subscribe(mqtt_garage_door_trigger_topic);
-}
-
-void subscriptionCallback(char* topic, byte* message, unsigned int length) {
+void mqttMessageReceivedCallback(char* topic, byte* message, unsigned int length) {
     Serial.print("Message arrived on topic: ");
     Serial.print(topic);
     Serial.print(". Message: ");
