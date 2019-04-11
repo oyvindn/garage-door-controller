@@ -6,20 +6,20 @@ const char* ssid     = "WIFI_SSID";
 const char* password = "WIFI_PASSWORD";
 
 // IO pins settings
-const int door_open_magnetic_sensor_gpio   = 12;
-const int door_closed_magnetic_sensor_gpio = 27;
-const int door_motor_sensor_gpio           = 13;
-const int door_motor_relay_switch_gpio     = 33;
+const int garage_door_open_magnetic_sensor_gpio   = 12;
+const int garage_door_closed_magnetic_sensor_gpio = 27;
+const int garage_door_opener_sensor_gpio          = 13;
+const int garage_door_opener_relay_switch_gpio   = 33;
 
 // MQTT broker settings
 const char* mqtt_broker_host = "MQTT_HOST";
 const int mqtt_broker_port   = 8883;
 
 // MQTT topics
-const char* mqtt_garage_door_control_topic       = "home/garage/door/control";
-const char* mqtt_garage_door_open_sensor_topic   = "home/garage/door/open";
-const char* mqtt_garage_door_closed_sensor_topic = "home/garage/door/closed";
-const char* mqtt_garage_door_motor_sensor_topic  = "home/garage/door/motor";
+const char* garage_door_operner_control_topic       = "home/garage/door-opener/control";
+const char* garage_door_opener_active_sensor_topic  = "home/garage/door-opener/active";
+const char* garage_door_open_sensor_topic           = "home/garage/door/open";
+const char* garage_door_closed_sensor_topic         = "home/garage/door/closed";
 
 // TLS settings
 const char* root_ca = \
