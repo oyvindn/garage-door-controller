@@ -5,7 +5,7 @@
 #include "setup.h"
 
 WiFiClientSecure wifiClientSecure;
-PubSubClient mqttPubSubClient(mqtt_broker_host, mqtt_broker_port, &handleIncomingMqttMessage, wifiClientSecure);
+PubSubClient mqttClient(mqtt_broker_host, mqtt_broker_port, &handleIncomingMqttMessage, wifiClientSecure);
 
 void setup() {
     Serial.begin(115200);
@@ -18,12 +18,6 @@ void setup() {
     pinMode(garage_door_closed_magnetic_sensor_gpio, INPUT);
     pinMode(garage_door_opener_sensor_gpio, INPUT);
     pinMode(garage_door_opener_relay_switch_gpio, OUTPUT);
-}
-
-void loop() {
-    //TODO: MQTT authentication
-    ensureMqttConnection(mqttPubSubClient);
-    mqttPubSubClient.loop();
 }
 
 void connectToWifi() {
@@ -44,13 +38,20 @@ void connectToWifi() {
     Serial.println(WiFi.localIP());
 }
 
-void ensureMqttConnection(PubSubClient &mqttClient) {
+void loop() {
+    //TODO: MQTT authentication
     if (!mqttClient.connected()) {
-        connectToMqttBroker(mqttClient);
+        connectToMqttBroker();
     }
+
+    readSensorValueAndPublishToMqtt(garage_door_opener_sensor_gpio, garage_door_opener_active_sensor_topic);
+    readSensorValueAndPublishToMqtt(garage_door_open_magnetic_sensor_gpio, garage_door_open_sensor_topic);
+    readSensorValueAndPublishToMqtt(garage_door_closed_magnetic_sensor_gpio, garage_door_closed_sensor_topic);
+
+    mqttClient.loop();
 }
 
-void connectToMqttBroker(PubSubClient &mqttClient) {
+void connectToMqttBroker() {
     while (!mqttClient.connected()) {
         Serial.print("Attempting MQTT connection...");
 
@@ -80,8 +81,10 @@ void handleIncomingMqttMessage(char* topic, byte* message, unsigned int length) 
     }
     Serial.println();
 
-    if(topic == garage_door_operner_control_topic && command == "TRIGGER_DOOR") {
+    if(topic == garage_door_operner_control_topic && command == "1") {
         triggerGarageDoorOpener();
+    } {
+       Serial.println("Uknown command"); 
     }
 }
 
@@ -90,4 +93,9 @@ void triggerGarageDoorOpener() {
     digitalWrite(garage_door_opener_relay_switch_gpio, HIGH);
     delay(500);
     digitalWrite(garage_door_opener_relay_switch_gpio, LOW);
+}
+
+void readSensorValueAndPublishToMqtt(const int &sensorGpio, const char* mqttTopic) {
+    int state = digitalRead(sensorGpio);
+    mqttClient.publish(mqttTopic, state == HIGH ? "1" : "0");
 }
