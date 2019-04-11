@@ -14,6 +14,8 @@ const int garage_door_opener_relay_switch_gpio   = 33;
 // MQTT broker settings
 const char* mqtt_broker_host = "MQTT_HOST";
 const int mqtt_broker_port   = 8883;
+const char* mqtt_user        = "MQTT_USERNAME";
+const char* mqtt_password    = "MQTT_PASSWORD";
 
 // MQTT topics
 const char* garage_door_operner_control_topic       = "home/garage/door-opener/control";

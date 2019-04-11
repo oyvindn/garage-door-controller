@@ -39,10 +39,7 @@ void connectToWifi() {
 }
 
 void loop() {
-    //TODO: MQTT authentication
-    if (!mqttClient.connected()) {
-        connectToMqttBroker();
-    }
+    connectToMqttBroker();
 
     readSensorValueAndPublishToMqtt(garage_door_opener_sensor_gpio, garage_door_opener_active_sensor_topic);
     readSensorValueAndPublishToMqtt(garage_door_open_magnetic_sensor_gpio, garage_door_open_sensor_topic);
@@ -55,7 +52,7 @@ void connectToMqttBroker() {
     while (!mqttClient.connected()) {
         Serial.print("Attempting MQTT connection...");
 
-        if (mqttClient.connect("garage-door-controller")) {
+        if (mqttClient.connect("garage-door-controller", mqtt_user, mqtt_password)) {
             Serial.println("connected");
             mqttClient.subscribe(garage_door_operner_control_topic);
             Serial.print("Subscribed to topic ");
