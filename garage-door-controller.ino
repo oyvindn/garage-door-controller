@@ -18,7 +18,7 @@ void setup() {
 
     pinMode(garage_door_open_magnetic_sensor_gpio, INPUT);
     pinMode(garage_door_closed_magnetic_sensor_gpio, INPUT);
-    pinMode(garage_door_opener_sensor_gpio, INPUT);
+    pinMode(garage_door_opener_active_sensor_gpio, INPUT);
     pinMode(garage_door_opener_relay_switch_gpio, OUTPUT);
 }
 
