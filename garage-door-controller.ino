@@ -12,7 +12,9 @@ void setup() {
     delay(10);
     connectToWifi();
 
-    wifiClientSecure.setCACert(root_ca);
+    wifiClientSecure.setCACert(root_ca_certificate);
+    wifiClientSecure.setCertificate(client_certificate);
+    wifiClientSecure.setPrivateKey(client_private_key);
 
     pinMode(garage_door_open_magnetic_sensor_gpio, INPUT);
     pinMode(garage_door_closed_magnetic_sensor_gpio, INPUT);
