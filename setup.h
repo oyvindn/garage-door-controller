@@ -9,7 +9,7 @@ const char* password = "WIFI_PASSWORD";
 const int garage_door_open_magnetic_sensor_gpio   = 12;
 const int garage_door_closed_magnetic_sensor_gpio = 27;
 const int garage_door_opener_sensor_gpio          = 13;
-const int garage_door_opener_relay_switch_gpio   = 33;
+const int garage_door_opener_relay_switch_gpio   = 21;
 
 // MQTT broker settings
 const char* mqtt_broker_host = "MQTT_HOST";
