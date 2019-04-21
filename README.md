@@ -1,6 +1,6 @@
 # Garage door controller
 
-Arduino based garage door controller for ESP32
+Arduino based garage door controller for ESP32.
 
 Uses MQTT to pulish sensor data and to receive the command for triggering the garage door opener.
 
