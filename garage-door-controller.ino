@@ -48,6 +48,8 @@ void loop() {
     readSensorValueAndPublishToMqtt(garage_door_closed_magnetic_sensor_gpio, garage_door_closed_sensor_topic);
 
     mqttClient.loop();
+
+    delay(100);
 }
 
 void connectToMqttBroker() {
@@ -80,9 +82,9 @@ void handleIncomingMqttMessage(char* topic, byte* message, unsigned int length) 
     }
     Serial.println();
 
-    if(topic == garage_door_operner_control_topic && command == "1") {
+    if(String(topic) == String(garage_door_operner_control_topic) && command == "1") {
         triggerGarageDoorOpener();
-    } {
+    } else {
        Serial.println("Uknown command"); 
     }
 }
