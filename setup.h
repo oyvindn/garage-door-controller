@@ -6,9 +6,9 @@ const char* ssid     = "WIFI_SSID";
 const char* password = "WIFI_PASSWORD";
 
 // IO pins settings
-const int garage_door_open_magnetic_sensor_gpio   = 12;
-const int garage_door_closed_magnetic_sensor_gpio = 27;
-const int garage_door_opener_active_sensor_gpio   = 13;
+const int garage_door_open_magnetic_sensor_gpio   = 33;
+const int garage_door_closed_magnetic_sensor_gpio = 15;
+const int garage_door_opener_active_sensor_gpio   = 32;
 const int garage_door_opener_relay_switch_gpio    = 21;
 
 // MQTT broker settings
