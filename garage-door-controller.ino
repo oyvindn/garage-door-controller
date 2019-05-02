@@ -49,7 +49,7 @@ void loop() {
 
     mqttClient.loop();
 
-    delay(100);
+    delay(500);
 }
 
 void connectToMqttBroker() {
