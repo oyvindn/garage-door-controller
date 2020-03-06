@@ -1,5 +1,5 @@
-#ifndef Setup_h
-#define Setup_h
+#ifndef Config_h
+#define Config_h
 
 // WiFi settings
 const char* ssid     = "WIFI_SSID";
@@ -37,4 +37,4 @@ const char* client_private_key = \
     "Client Private Key\n" \
     "-----END RSA PRIVATE KEY-----\n";
 
-#endif //Setup_h
+#endif //Config_h

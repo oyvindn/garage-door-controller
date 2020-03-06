@@ -4,7 +4,7 @@
 #include <PubSubClient.h>
 
 #include "Debug.h"
-#include "setup.h"
+#include "Config.h"
 
 WiFiClientSecure wifiClientSecure;
 PubSubClient mqttClient(mqtt_broker_host, mqtt_broker_port, &handleIncomingMqttMessage, wifiClientSecure);
