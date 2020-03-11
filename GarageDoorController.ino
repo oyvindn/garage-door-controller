@@ -5,10 +5,7 @@
 
 #include "Config.h"
 #include "Debug.h"
-
-
-WiFiClientSecure wifiClientSecure;
-PubSubClient mqttClient(mqtt_broker_host, mqtt_broker_port, &handleIncomingMqttMessage, wifiClientSecure);
+#include "MillisDelay.h"
 
 enum DoorState {
     OPEN = 0,
@@ -18,6 +15,15 @@ enum DoorState {
     STOPPED = 4,
     UNKNOWN = 5
 };
+
+struct SensorValues {
+    int doorOpenerRunning, doorOpen, doorClosed;
+};
+
+WiFiClientSecure wifiClientSecure;
+PubSubClient mqttClient(mqtt_broker_host, mqtt_broker_port, &handleIncomingMqttMessage, wifiClientSecure);
+
+MillisDelay legacySensorPublishDelay;
 
 int lastDoorState = UNKNOWN;
 int lastDoorMovementState = UNKNOWN;
@@ -35,19 +41,30 @@ void setup() {
     pinMode(garage_door_closed_magnetic_sensor_gpio, INPUT_PULLDOWN);
     pinMode(garage_door_opener_active_sensor_gpio, INPUT_PULLDOWN);
     pinMode(garage_door_opener_relay_switch_gpio, OUTPUT);
+
+    legacySensorPublishDelay.start(500);
 }
 
 void loop() {
     connectToMqttBroker();
 
-    int currentDoorState = getCurrentDoorState();
+    SensorValues sensorValues = readSensors();
+
+    int currentDoorState = calculateDoorState(sensorValues, lastDoorState, lastDoorMovementState);
     if(currentDoorState != lastDoorState) {
         lastDoorState = currentDoorState;
         if((currentDoorState == OPENING || currentDoorState == CLOSING) && lastDoorMovementState != currentDoorState) {
             lastDoorMovementState = currentDoorState;
         }
 
-        mqttClient.publish(garage_door_current_state_topic, "" + currentDoorState, true);
+        publishToMqtt(garage_door_current_state_topic, currentDoorState, true);
+    }
+
+    if (legacySensorPublishDelay.justFinished()) {
+        legacySensorPublishDelay.repeat();
+        publishToMqtt(garage_door_opener_active_sensor_topic, sensorValues.doorOpenerRunning, false);
+        publishToMqtt(garage_door_open_sensor_topic, sensorValues.doorOpen, false);
+        publishToMqtt(garage_door_closed_sensor_topic, sensorValues.doorClosed, false);
     }
 
     mqttClient.loop();
@@ -113,12 +130,20 @@ void triggerGarageDoorOpener() {
     digitalWrite(garage_door_opener_relay_switch_gpio, LOW);
 }
 
-int getCurrentDoorState() {
-    int doorOpenerRunning = digitalRead(garage_door_opener_active_sensor_gpio);
-    int doorOpen = digitalRead(garage_door_open_magnetic_sensor_gpio);
-    int doorClosed = digitalRead(garage_door_closed_magnetic_sensor_gpio);
-    
-    if(doorOpenerRunning == HIGH) {
+void publishToMqtt(const char* mqttTopic, int value, boolean retained) {
+    mqttClient.publish(mqttTopic, String(value).c_str(), retained);
+}
+
+struct SensorValues readSensors() {
+    return {
+        digitalRead(garage_door_opener_active_sensor_gpio),
+        digitalRead(garage_door_open_magnetic_sensor_gpio),
+        digitalRead(garage_door_closed_magnetic_sensor_gpio)
+    };
+}
+
+int calculateDoorState(const struct SensorValues &sensorValues, const int &lastDoorState, const int &lastDoorMovementState) {
+    if(sensorValues.doorOpenerRunning == HIGH) {
         if(lastDoorState == OPENING || lastDoorState == CLOSED) {
             return OPENING;
         } else if(lastDoorState == CLOSING || lastDoorState == OPEN) {
@@ -134,9 +159,9 @@ int getCurrentDoorState() {
         } else {
            return UNKNOWN; 
         }
-    } else if(doorOpen == HIGH) {
+    } else if(sensorValues.doorOpen == HIGH) {
         return OPEN;
-    } else if(doorClosed == HIGH) {
+    } else if(sensorValues.doorClosed == HIGH) {
         return CLOSED;
     } else {
         return STOPPED;
