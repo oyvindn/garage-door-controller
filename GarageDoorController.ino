@@ -48,9 +48,19 @@ void setup() {
 void loop() {
     connectToMqttBroker();
 
+    DPRINTLN();
+
     SensorValues sensorValues = readSensors();
+    DPRINT("Sensor readings - garage_door_open_magnetic_sensor: ");
+    DPRINT(sensorValues.doorOpen);
+    DPRINT(", garage_door_closed_magnetic_sensor: ");
+    DPRINT(sensorValues.doorClosed);
+    DPRINT(", garage_door_opener_active_sensor: ");
+    DPRINTLN(sensorValues.doorOpenerRunning);
 
     int currentDoorState = determineCurrentDoorState(sensorValues, lastDoorState, lastDoorMovementState);
+    DPRINT("Current door state: ");
+    DPRINTLN(currentDoorState);
     if (currentDoorState != lastDoorState) {
         lastDoorState = currentDoorState;
         if (currentDoorState == OPENING || currentDoorState == CLOSING) {
@@ -75,7 +85,7 @@ void loop() {
 }
 
 void connectToWifi() {
-    DPRINT();
+    DPRINTLN();
     DPRINT("Connecting to ");
     DPRINTLN(ssid);
 
@@ -141,6 +151,12 @@ void triggerGarageDoorOpener() {
 }
 
 void publishToMqtt(const char* mqttTopic, int value, boolean retained) {
+    DPRINTLN();
+    DPRINT("Publishing to MQTT - topic: ");
+    DPRINT(mqttTopic);
+    DPRINT(" , value: ");
+    DPRINT(String(value).c_str());
+    DPRINTLN();
     mqttClient.publish(mqttTopic, String(value).c_str(), retained);
 }
 
