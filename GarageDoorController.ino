@@ -13,7 +13,7 @@ enum DoorState {
     OPENING = 2,
     CLOSING = 3,
     STOPPED = 4,
-    UNKNOWN = 5
+    MOVING_IN_UNKNOWN_DIRECTION = 5
 };
 
 struct SensorValues {
@@ -25,8 +25,8 @@ PubSubClient mqttClient(mqtt_broker_host, mqtt_broker_port, &handleIncomingMqttM
 
 MillisDelay legacySensorPublishDelay;
 
-int lastDoorState = UNKNOWN;
-int lastDoorMovementState = UNKNOWN;
+int lastDoorState = -1;
+int lastDoorMovementState = -1;
 
 void setup() {
     Serial.begin(115200);
@@ -50,11 +50,15 @@ void loop() {
 
     SensorValues sensorValues = readSensors();
 
-    int currentDoorState = calculateDoorState(sensorValues, lastDoorState, lastDoorMovementState);
+    int currentDoorState = determineCurrentDoorState(sensorValues, lastDoorState, lastDoorMovementState);
     if(currentDoorState != lastDoorState) {
         lastDoorState = currentDoorState;
-        if((currentDoorState == OPENING || currentDoorState == CLOSING) && lastDoorMovementState != currentDoorState) {
+        if(currentDoorState == OPENING || currentDoorState == CLOSING) {
             lastDoorMovementState = currentDoorState;
+        } else if(currentDoorState == OPEN) {
+            lastDoorMovementState = OPENING;
+        } else if(currentDoorState = CLOSED) {
+            lastDoorMovementState = CLOSING;
         }
 
         publishToMqtt(garage_door_current_state_topic, currentDoorState, true);
@@ -90,6 +94,7 @@ void connectToWifi() {
 
 void connectToMqttBroker() {
     while (!mqttClient.connected()) {
+        int numberOfFailedConnectionAttemts = 0;
         DPRINT("Attempting MQTT connection...");
 
         if (mqttClient.connect("garage-door-controller")) {
@@ -98,10 +103,15 @@ void connectToMqttBroker() {
             DPRINT("Subscribed to topic ");
             DPRINTLN(garage_door_opener_control_topic);
         } else {
+            numberOfFailedConnectionAttemts += 1;
+            int waitMilliseconds = 500;
+            if (numberOfFailedConnectionAttemts > 5) {
+                waitMilliseconds = 5000;
+            }
             DPRINT("failed, rc=");
             DPRINT(mqttClient.state());
-            DPRINTLN(" trying again in 5 seconds");
-            delay(5000);
+            DPRINTLN(" trying again in 1 seconds");
+            delay(waitMilliseconds);
         }
     }
 }
@@ -142,7 +152,7 @@ struct SensorValues readSensors() {
     };
 }
 
-int calculateDoorState(const struct SensorValues &sensorValues, const int &lastDoorState, const int &lastDoorMovementState) {
+int determineCurrentDoorState(const struct SensorValues &sensorValues, const int &lastDoorState, const int &lastDoorMovementState) {
     if(sensorValues.doorOpenerRunning == HIGH) {
         if(lastDoorState == OPENING || lastDoorState == CLOSED) {
             return OPENING;
@@ -154,10 +164,10 @@ int calculateDoorState(const struct SensorValues &sensorValues, const int &lastD
             } else if(lastDoorMovementState == CLOSING) {
                 return OPENING;
             } else {
-                UNKNOWN;
+                return MOVING_IN_UNKNOWN_DIRECTION;
             }
         } else {
-           return UNKNOWN; 
+           return MOVING_IN_UNKNOWN_DIRECTION; 
         }
     } else if(sensorValues.doorOpen == HIGH) {
         return OPEN;
