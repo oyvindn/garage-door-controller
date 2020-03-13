@@ -51,13 +51,13 @@ void loop() {
     SensorValues sensorValues = readSensors();
 
     int currentDoorState = determineCurrentDoorState(sensorValues, lastDoorState, lastDoorMovementState);
-    if(currentDoorState != lastDoorState) {
+    if (currentDoorState != lastDoorState) {
         lastDoorState = currentDoorState;
-        if(currentDoorState == OPENING || currentDoorState == CLOSING) {
+        if (currentDoorState == OPENING || currentDoorState == CLOSING) {
             lastDoorMovementState = currentDoorState;
-        } else if(currentDoorState == OPEN) {
+        } else if (currentDoorState == OPEN) {
             lastDoorMovementState = OPENING;
-        } else if(currentDoorState = CLOSED) {
+        } else if (currentDoorState = CLOSED) {
             lastDoorMovementState = CLOSING;
         }
 
@@ -128,7 +128,7 @@ void handleIncomingMqttMessage(char* topic, byte* message, unsigned int length) 
     DPRINT(": ");
     DPRINTLN(command);
 
-    if(String(topic) == String(garage_door_opener_control_topic) && command == "1") {
+    if (String(topic) == String(garage_door_opener_control_topic) && command == "1") {
         triggerGarageDoorOpener();
     }
 }
@@ -153,15 +153,15 @@ struct SensorValues readSensors() {
 }
 
 int determineCurrentDoorState(const struct SensorValues &sensorValues, const int &lastDoorState, const int &lastDoorMovementState) {
-    if(sensorValues.doorOpenerRunning == HIGH) {
-        if(lastDoorState == OPENING || lastDoorState == CLOSED) {
+    if (sensorValues.doorOpenerRunning == HIGH) {
+        if (lastDoorState == OPENING || lastDoorState == CLOSED) {
             return OPENING;
-        } else if(lastDoorState == CLOSING || lastDoorState == OPEN) {
+        } else if (lastDoorState == CLOSING || lastDoorState == OPEN) {
             return CLOSING;
-        } else if(lastDoorState == STOPPED) {
-            if(lastDoorMovementState == OPENING) {
+        } else if (lastDoorState == STOPPED) {
+            if (lastDoorMovementState == OPENING) {
                 return CLOSING;
-            } else if(lastDoorMovementState == CLOSING) {
+            } else if (lastDoorMovementState == CLOSING) {
                 return OPENING;
             } else {
                 return MOVING_IN_UNKNOWN_DIRECTION;
@@ -169,9 +169,9 @@ int determineCurrentDoorState(const struct SensorValues &sensorValues, const int
         } else {
            return MOVING_IN_UNKNOWN_DIRECTION; 
         }
-    } else if(sensorValues.doorOpen == HIGH) {
+    } else if (sensorValues.doorOpen == HIGH) {
         return OPEN;
-    } else if(sensorValues.doorClosed == HIGH) {
+    } else if (sensorValues.doorClosed == HIGH) {
         return CLOSED;
     } else {
         return STOPPED;
