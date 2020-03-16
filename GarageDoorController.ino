@@ -17,7 +17,7 @@ enum DoorState {
 };
 
 struct SensorValues {
-    int doorOpenerRunning, doorOpen, doorClosed;
+    int doorInMotion, doorOpen, doorClosed;
 };
 
 WiFiClientSecure wifiClientSecure;
@@ -76,7 +76,7 @@ void loop() {
 
     if (legacySensorPublishDelay.justFinished()) {
         legacySensorPublishDelay.repeat();
-        publishToMqtt(garage_door_opener_active_sensor_topic, sensorValues.doorOpenerRunning, false);
+        publishToMqtt(garage_door_opener_active_sensor_topic, sensorValues.doorInMotion, false);
         publishToMqtt(garage_door_open_sensor_topic, sensorValues.doorOpen, false);
         publishToMqtt(garage_door_closed_sensor_topic, sensorValues.doorClosed, false);
     }
@@ -105,6 +105,7 @@ void connectToWifi() {
 void connectToMqttBroker() {
     while (!mqttClient.connected()) {
         int numberOfFailedConnectionAttemts = 0;
+        DPRINTLN();
         DPRINT("Attempting MQTT connection...");
 
         if (mqttClient.connect("garage-door-controller")) {
@@ -161,15 +162,22 @@ void publishToMqtt(const char* mqttTopic, int value, boolean retained) {
 }
 
 struct SensorValues readSensors() {
+    int doorInMotion1 = digitalRead(garage_door_opener_active_sensor_gpio);
+    int doorOpen = digitalRead(garage_door_open_magnetic_sensor_gpio);
+    int doorInMotion2 = digitalRead(garage_door_opener_active_sensor_gpio);
+    int doorClosed = digitalRead(garage_door_closed_magnetic_sensor_gpio);
+    int doorInMotion3 = digitalRead(garage_door_opener_active_sensor_gpio);
+    int doorInMotion = (doorInMotion1 + doorInMotion2 + doorInMotion3) == 3 ? HIGH : LOW;
+
     return {
-        digitalRead(garage_door_opener_active_sensor_gpio),
-        digitalRead(garage_door_open_magnetic_sensor_gpio),
-        digitalRead(garage_door_closed_magnetic_sensor_gpio)
+        doorInMotion,
+        doorOpen,
+        doorClosed
     };
 }
 
 int determineCurrentDoorState(const struct SensorValues &sensorValues, const int &lastDoorState, const int &lastDoorMovementState) {
-    if (sensorValues.doorOpenerRunning == HIGH) {
+    if (sensorValues.doorInMotion == HIGH) {
         if (lastDoorState == OPENING || lastDoorState == CLOSED) {
             return OPENING;
         } else if (lastDoorState == CLOSING || lastDoorState == OPEN) {
