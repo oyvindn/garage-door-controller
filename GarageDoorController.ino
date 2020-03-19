@@ -23,7 +23,10 @@ struct SensorValues {
 WiFiClientSecure wifiClientSecure;
 PubSubClient mqttClient(mqtt_broker_host, mqtt_broker_port, &handleIncomingMqttMessage, wifiClientSecure);
 
+MillisDelay republishCurrentDoorStateDelay;
 MillisDelay legacySensorPublishDelay;
+MillisDelay flakyDoorOpenerSignalDelay;
+MillisDelay garageDoorPpenerRelaySwitchDelay;
 
 int lastDoorState = -1;
 int lastDoorMovementState = -1;
@@ -43,14 +46,20 @@ void setup() {
     pinMode(garage_door_opener_relay_switch_gpio, OUTPUT);
 
     legacySensorPublishDelay.start(500);
+    republishCurrentDoorStateDelay.start(60000);
 }
 
 void loop() {
     connectToMqttBroker();
 
+    if(garageDoorPpenerRelaySwitchDelay.justFinished()) {
+        digitalWrite(garage_door_opener_relay_switch_gpio, LOW);
+    }
+
     DPRINTLN();
 
     SensorValues sensorValues = readSensors();
+
     DPRINT("Sensor readings - garage_door_open_magnetic_sensor: ");
     DPRINT(sensorValues.doorOpen);
     DPRINT(", garage_door_closed_magnetic_sensor: ");
@@ -59,19 +68,39 @@ void loop() {
     DPRINTLN(sensorValues.doorOpenerRunning);
 
     int currentDoorState = determineCurrentDoorState(sensorValues, lastDoorState, lastDoorMovementState);
+    
     DPRINT("Current door state: ");
     DPRINTLN(currentDoorState);
-    if (currentDoorState != lastDoorState) {
-        lastDoorState = currentDoorState;
-        if (currentDoorState == OPENING || currentDoorState == CLOSING) {
-            lastDoorMovementState = currentDoorState;
-        } else if (currentDoorState == OPEN) {
-            lastDoorMovementState = OPENING;
-        } else if (currentDoorState = CLOSED) {
-            lastDoorMovementState = CLOSING;
-        }
 
-        publishToMqtt(garage_door_current_state_topic, currentDoorState, true);
+    if (currentDoorState == lastDoorState) {
+        flakyDoorOpenerSignalDelay.stop();
+        if(republishCurrentDoorStateDelay.justFinished()) {
+            republishCurrentDoorStateDelay.restart();
+
+            publishToMqtt(garage_door_current_state_topic, currentDoorState, true);
+        }
+    } else {
+        /*
+         * The garage_door_opener_active_sensor use a output signal from the garage door opener ment for controlling a warning light.
+         * This output signal is a bit flaky and will sporadically read as HIGH, even though the opener is inactive.
+         * To remedy this we make sure the sinal is HIGH for å minimum time frame to make sure the opener is actual active and the door in motion.
+         */
+        if ((currentDoorState == OPENING || currentDoorState == CLOSING || currentDoorState == MOVING_IN_UNKNOWN_DIRECTION) && !flakyDoorOpenerSignalDelay.justFinished()) {
+            if(!flakyDoorOpenerSignalDelay.isRunning()) {
+                flakyDoorOpenerSignalDelay.start(100);
+            }
+        } else {
+            publishToMqtt(garage_door_current_state_topic, currentDoorState, true);
+            
+            lastDoorState = currentDoorState;
+            if (currentDoorState == OPENING || currentDoorState == CLOSING) {
+                lastDoorMovementState = currentDoorState;
+            } else if (currentDoorState == OPEN) {
+                lastDoorMovementState = OPENING;
+            } else if (currentDoorState = CLOSED) {
+                lastDoorMovementState = CLOSING;
+            }
+        }
     }
 
     if (legacySensorPublishDelay.justFinished()) {
@@ -147,8 +176,7 @@ void handleIncomingMqttMessage(char* topic, byte* message, unsigned int length) 
 void triggerGarageDoorOpener() {
     DPRINTLN("Triggering garage door opener relay switch for 500ms");
     digitalWrite(garage_door_opener_relay_switch_gpio, HIGH);
-    delay(500); //TODO: avoid delay?
-    digitalWrite(garage_door_opener_relay_switch_gpio, LOW);
+    garageDoorPpenerRelaySwitchDelay.start(500);
 }
 
 void publishToMqtt(const char* mqttTopic, int value, boolean retained) {
@@ -162,17 +190,10 @@ void publishToMqtt(const char* mqttTopic, int value, boolean retained) {
 }
 
 struct SensorValues readSensors() {
-    int doorInMotion1 = digitalRead(garage_door_opener_active_sensor_gpio);
-    int doorOpen = digitalRead(garage_door_open_magnetic_sensor_gpio);
-    int doorInMotion2 = digitalRead(garage_door_opener_active_sensor_gpio);
-    int doorClosed = digitalRead(garage_door_closed_magnetic_sensor_gpio);
-    int doorInMotion3 = digitalRead(garage_door_opener_active_sensor_gpio);
-    int doorInMotion = (doorInMotion1 + doorInMotion2 + doorInMotion3) == 3 ? HIGH : LOW;
-
     return {
-        doorInMotion,
-        doorOpen,
-        doorClosed
+        digitalRead(garage_door_opener_active_sensor_gpio),
+        digitalRead(garage_door_open_magnetic_sensor_gpio),
+        digitalRead(garage_door_closed_magnetic_sensor_gpio)
     };
 }
 
