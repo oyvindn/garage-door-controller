@@ -24,7 +24,6 @@ WiFiClientSecure wifiClientSecure;
 PubSubClient mqttClient(mqtt_broker_host, mqtt_broker_port, &handleIncomingMqttMessage, wifiClientSecure);
 
 MillisDelay republishCurrentDoorStateDelay;
-MillisDelay legacySensorPublishDelay;
 MillisDelay flakyDoorOpenerSignalDelay;
 MillisDelay garageDoorPpenerRelaySwitchDelay;
 
@@ -45,7 +44,6 @@ void setup() {
     pinMode(garage_door_opener_active_sensor_gpio, INPUT_PULLDOWN);
     pinMode(garage_door_opener_relay_switch_gpio, OUTPUT);
 
-    legacySensorPublishDelay.start(500);
     republishCurrentDoorStateDelay.start(60000);
 }
 
@@ -101,13 +99,6 @@ void loop() {
                 lastDoorMovementState = CLOSING;
             }
         }
-    }
-
-    if (legacySensorPublishDelay.justFinished()) {
-        legacySensorPublishDelay.repeat();
-        publishToMqtt(garage_door_opener_active_sensor_topic, sensorValues.doorInMotion, false);
-        publishToMqtt(garage_door_open_sensor_topic, sensorValues.doorOpen, false);
-        publishToMqtt(garage_door_closed_sensor_topic, sensorValues.doorClosed, false);
     }
 
     mqttClient.loop();
