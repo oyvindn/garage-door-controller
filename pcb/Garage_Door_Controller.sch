@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.6.1">
+<eagle version="9.6.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="mm"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -402,116 +402,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </deviceset>
 </devicesets>
 </library>
-<library name="Connectors">
-<packages>
-<package name="FCI_10118193-0001LF">
-<wire x1="-3.55" y1="0.35" x2="-3.3" y2="0.6" width="0" layer="46" curve="-90"/>
-<wire x1="-3.3" y1="0.6" x2="-3.05" y2="0.35" width="0" layer="46" curve="-90"/>
-<wire x1="-3.05" y1="0.35" x2="-3.05" y2="-0.35" width="0" layer="46"/>
-<wire x1="-3.05" y1="-0.35" x2="-3.3" y2="-0.6" width="0" layer="46" curve="-90"/>
-<wire x1="-3.3" y1="-0.6" x2="-3.55" y2="-0.35" width="0" layer="46" curve="-90"/>
-<wire x1="-3.55" y1="-0.35" x2="-3.55" y2="0.35" width="0" layer="46"/>
-<wire x1="3.05" y1="0.35" x2="3.3" y2="0.6" width="0" layer="46" curve="-90"/>
-<wire x1="3.3" y1="0.6" x2="3.55" y2="0.35" width="0" layer="46" curve="-90"/>
-<wire x1="3.55" y1="0.35" x2="3.55" y2="-0.35" width="0" layer="46"/>
-<wire x1="3.55" y1="-0.35" x2="3.3" y2="-0.6" width="0" layer="46" curve="-90"/>
-<wire x1="3.3" y1="-0.6" x2="3.05" y2="-0.35" width="0" layer="46" curve="-90"/>
-<wire x1="3.05" y1="-0.35" x2="3.05" y2="0.35" width="0" layer="46"/>
-<wire x1="-4.2" y1="3.6" x2="-4.2" y2="-3" width="0.05" layer="39"/>
-<wire x1="-4.2" y1="-3" x2="4.2" y2="-3" width="0.05" layer="39"/>
-<wire x1="4.2" y1="-3" x2="4.2" y2="3.6" width="0.05" layer="39"/>
-<wire x1="4.2" y1="3.6" x2="-4.2" y2="3.6" width="0.05" layer="39"/>
-<text x="-3.854409375" y="3.85391875" size="1.27" layer="25">&gt;NAME</text>
-<text x="-3.88608125" y="-4.40371875" size="1.27" layer="27">&gt;VALUE</text>
-<circle x="-2" y="3.5" radius="0.1" width="0.2" layer="21"/>
-<wire x1="-3.8" y1="-1.45" x2="3.8" y2="-1.45" width="0.127" layer="21"/>
-<wire x1="-3.8" y1="2.9" x2="3.8" y2="2.9" width="0.127" layer="51"/>
-<wire x1="3.8" y1="2.9" x2="3.8" y2="-1.45" width="0.127" layer="51"/>
-<wire x1="3.8" y1="-1.45" x2="3.8" y2="-2.15" width="0.127" layer="51"/>
-<wire x1="3.8" y1="-2.15" x2="-3.8" y2="-2.15" width="0.127" layer="51"/>
-<wire x1="-3.8" y1="-2.15" x2="-3.8" y2="-2.1" width="0.127" layer="51"/>
-<wire x1="-3.8" y1="-2.1" x2="-3.8" y2="2.9" width="0.127" layer="51"/>
-<wire x1="-3.8" y1="-2.1" x2="-3.93" y2="-2.5" width="0.127" layer="51" curve="-90"/>
-<wire x1="-3.93" y1="-2.5" x2="-3.75" y2="-2.75" width="0.127" layer="51"/>
-<wire x1="-3.75" y1="-2.75" x2="-3.4" y2="-2.2" width="0.127" layer="51" curve="90"/>
-<wire x1="-3.2" y1="-2.2" x2="-3.2" y2="-2.75" width="0.127" layer="51"/>
-<wire x1="-3.2" y1="-2.75" x2="3.2" y2="-2.75" width="0.127" layer="51"/>
-<wire x1="3.2" y1="-2.75" x2="3.2" y2="-2.2" width="0.127" layer="51"/>
-<wire x1="3.8" y1="-2.1" x2="3.93" y2="-2.5" width="0.127" layer="51" curve="90"/>
-<wire x1="3.93" y1="-2.5" x2="3.75" y2="-2.8" width="0.127" layer="51"/>
-<wire x1="3.75" y1="-2.8" x2="3.4" y2="-2.2" width="0.127" layer="51" curve="-90"/>
-<wire x1="-3.8" y1="1.5" x2="-3.8" y2="1.1" width="0.127" layer="21"/>
-<wire x1="3.8" y1="1.1" x2="3.8" y2="1.5" width="0.127" layer="21"/>
-<wire x1="-3.8" y1="-1.1" x2="-3.8" y2="-1.4" width="0.127" layer="21"/>
-<wire x1="3.8" y1="-1.1" x2="3.8" y2="-1.4" width="0.127" layer="21"/>
-<wire x1="3.8" y1="-1.45" x2="6.15" y2="-1.45" width="0.127" layer="51"/>
-<text x="4.75" y="-1.3" size="0.4064" layer="51">PCB END</text>
-<smd name="1" x="-1.3" y="2.675" dx="0.4" dy="1.35" layer="1"/>
-<smd name="2" x="-0.65" y="2.675" dx="0.4" dy="1.35" layer="1"/>
-<smd name="3" x="0" y="2.675" dx="0.4" dy="1.35" layer="1"/>
-<smd name="4" x="0.65" y="2.675" dx="0.4" dy="1.35" layer="1"/>
-<smd name="5" x="1.3" y="2.675" dx="0.4" dy="1.35" layer="1"/>
-<smd name="S1" x="-3.2" y="2.45" dx="1.6" dy="1.4" layer="1"/>
-<smd name="S2" x="3.2" y="2.45" dx="1.6" dy="1.4" layer="1"/>
-<smd name="S4" x="-1.2" y="0" dx="1.9" dy="1.9" layer="1"/>
-<smd name="S3" x="1.2" y="0" dx="1.9" dy="1.9" layer="1"/>
-<hole x="-3.3" y="0" drill="0.5"/>
-<hole x="3.3" y="0" drill="0.5"/>
-<pad name="S5" x="-3.3" y="0" drill="0.5" diameter="0.9" shape="long" rot="R90"/>
-<pad name="S6" x="3.3" y="0" drill="0.5" diameter="0.9" shape="long" rot="R90"/>
-</package>
-</packages>
-<symbols>
-<symbol name="10118193-0001LF">
-<text x="-5.08165" y="10.9286" size="1.778" layer="95">&gt;NAME</text>
-<text x="-5.08193125" y="-12.7097" size="1.778" layer="96">&gt;VALUE</text>
-<wire x1="-5.08" y1="10.16" x2="5.08" y2="10.16" width="0.1524" layer="94"/>
-<wire x1="5.08" y1="10.16" x2="5.08" y2="-10.16" width="0.1524" layer="94"/>
-<wire x1="5.08" y1="-10.16" x2="-5.08" y2="-10.16" width="0.1524" layer="94"/>
-<wire x1="-5.08" y1="-10.16" x2="-5.08" y2="10.16" width="0.1524" layer="94"/>
-<pin name="VUSB" x="-10.16" y="7.62" length="middle" direction="pas"/>
-<pin name="D-" x="-10.16" y="5.08" length="middle" direction="pas"/>
-<pin name="D+" x="-10.16" y="2.54" length="middle" direction="pas"/>
-<pin name="ID" x="-10.16" y="0" length="middle" direction="pas"/>
-<pin name="GND" x="-10.16" y="-2.54" length="middle" direction="pas"/>
-<pin name="SHIELD" x="-10.16" y="-7.62" length="middle" direction="pas"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="USB_MICRO-B_10118193-0001LF" prefix="J">
-<description>USB Connector, Micro USB Type B, USB 2.0, Receptacle, 5 Ways, Surface Mount, Right Angle
-&lt;p&gt;
-Produsent: AMPHENOL ICC&lt;br&gt;
-Produsentens varenummer: 10118193-0001LF 
-&lt;/p&gt;</description>
-<gates>
-<gate name="G$1" symbol="10118193-0001LF" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="FCI_10118193-0001LF">
-<connects>
-<connect gate="G$1" pin="D+" pad="3"/>
-<connect gate="G$1" pin="D-" pad="2"/>
-<connect gate="G$1" pin="GND" pad="5"/>
-<connect gate="G$1" pin="ID" pad="4"/>
-<connect gate="G$1" pin="SHIELD" pad="S1 S2 S3 S4 S5 S6"/>
-<connect gate="G$1" pin="VUSB" pad="1"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="AVAILABILITY" value="Unavailable"/>
-<attribute name="DESCRIPTION" value=" USB - micro B USB 2.0 Receptacle Connector 5 Position Surface Mount, Right Angle; Through Hole "/>
-<attribute name="MF" value="Amphenol ICC"/>
-<attribute name="MP" value="10118193-0001LF"/>
-<attribute name="PACKAGE" value="None"/>
-<attribute name="PRICE" value="None"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
 <library name="IC-Microcontroller">
 <packages>
 <package name="ESP32-WROOM-32D">
@@ -591,18 +481,18 @@ Produsentens varenummer: 10118193-0001LF
 <smd name="39_7" x="-2.835" y="-4.075" dx="1.33" dy="1.33" layer="1"/>
 <smd name="39_8" x="-1" y="-4.075" dx="1.33" dy="1.33" layer="1"/>
 <smd name="39_9" x="0.835" y="-4.075" dx="1.33" dy="1.33" layer="1"/>
-<pad name="39_10" x="-1.9175" y="-0.405" drill="0.2" diameter="0.3"/>
-<pad name="39_11" x="-0.0825" y="-0.405" drill="0.2" diameter="0.3"/>
-<pad name="39_12" x="-2.835" y="-1.3225" drill="0.2" diameter="0.3"/>
-<pad name="39_13" x="-1" y="-1.3225" drill="0.2" diameter="0.3"/>
-<pad name="39_14" x="0.835" y="-1.3225" drill="0.2" diameter="0.3"/>
-<pad name="39_15" x="-1.9175" y="-2.24" drill="0.2" diameter="0.3"/>
-<pad name="39_16" x="-0.0825" y="-2.24" drill="0.2" diameter="0.3"/>
-<pad name="39_17" x="-2.835" y="-3.1575" drill="0.2" diameter="0.3"/>
-<pad name="39_18" x="-1" y="-3.1575" drill="0.2" diameter="0.3"/>
-<pad name="39_19" x="0.835" y="-3.1575" drill="0.2" diameter="0.3"/>
-<pad name="39_20" x="-1.9175" y="-4.075" drill="0.2" diameter="0.3"/>
-<pad name="39_21" x="-0.0825" y="-4.075" drill="0.2" diameter="0.3"/>
+<pad name="39_10" x="-1.9175" y="-0.405" drill="0.35"/>
+<pad name="39_11" x="-0.0825" y="-0.405" drill="0.35"/>
+<pad name="39_12" x="-2.835" y="-1.3225" drill="0.35"/>
+<pad name="39_13" x="-1" y="-1.3225" drill="0.35"/>
+<pad name="39_14" x="0.835" y="-1.3225" drill="0.35"/>
+<pad name="39_15" x="-1.9175" y="-2.24" drill="0.35"/>
+<pad name="39_16" x="-0.0825" y="-2.24" drill="0.35"/>
+<pad name="39_17" x="-2.835" y="-3.1575" drill="0.35"/>
+<pad name="39_18" x="-1" y="-3.1575" drill="0.35"/>
+<pad name="39_19" x="0.835" y="-3.1575" drill="0.35"/>
+<pad name="39_20" x="-1.9175" y="-4.075" drill="0.35"/>
+<pad name="39_21" x="-0.0825" y="-4.075" drill="0.35"/>
 </package>
 </packages>
 <symbols>
@@ -8613,6 +8503,89 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </deviceset>
 </devicesets>
 </library>
+<library name="Connectors">
+<packages>
+<package name="MOLEX_47346-0001">
+<description>MICRO USB R/A-473460001</description>
+<wire x1="-6" y1="-1.45" x2="6" y2="-1.45" width="0.127" layer="51"/>
+<text x="-5.910390625" y="-1.853259375" size="0.3053375" layer="51">PCB EDGE</text>
+<wire x1="-3.75" y1="3.2" x2="-3.75" y2="1.2" width="0.127" layer="21"/>
+<wire x1="3.75" y1="3.2" x2="3.75" y2="1.2" width="0.127" layer="21"/>
+<wire x1="-3.75" y1="3.2" x2="-3.5" y2="3.2" width="0.127" layer="21"/>
+<wire x1="3.75" y1="3.2" x2="3.5" y2="3.2" width="0.127" layer="21"/>
+<wire x1="-4.25" y1="-1.25" x2="-4.25" y2="3.75" width="0.05" layer="39"/>
+<wire x1="-4.25" y1="3.75" x2="4.25" y2="3.75" width="0.05" layer="39"/>
+<wire x1="4.25" y1="3.75" x2="4.25" y2="-1.25" width="0.05" layer="39"/>
+<wire x1="4.25" y1="-1.25" x2="-4.25" y2="-1.25" width="0.05" layer="39"/>
+<text x="-4.25331875" y="-0.0500375" size="0.813434375" layer="25" rot="R90">&gt;NAME</text>
+<text x="5.15563125" y="-0.450490625" size="0.8136875" layer="27" rot="R90">&gt;VALUE</text>
+<circle x="-1.6" y="3.7" radius="0.05" width="0.1" layer="21"/>
+<wire x1="-3.75" y1="3.2" x2="3.75" y2="3.2" width="0.127" layer="51"/>
+<wire x1="3.75" y1="3.2" x2="3.75" y2="-2.15" width="0.127" layer="51"/>
+<wire x1="3.75" y1="-2.15" x2="-3.75" y2="-2.15" width="0.127" layer="51"/>
+<wire x1="-3.75" y1="-2.15" x2="-3.75" y2="3.2" width="0.127" layer="51"/>
+<smd name="1" x="-1.3" y="2.66" dx="1.38" dy="0.45" layer="1" rot="R90"/>
+<smd name="2" x="-0.65" y="2.66" dx="1.38" dy="0.45" layer="1" rot="R90"/>
+<smd name="3" x="0" y="2.66" dx="1.38" dy="0.45" layer="1" rot="R90"/>
+<smd name="4" x="0.65" y="2.66" dx="1.38" dy="0.45" layer="1" rot="R90"/>
+<smd name="5" x="1.3" y="2.66" dx="1.38" dy="0.45" layer="1" rot="R90"/>
+<smd name="SH2" x="2.4625" y="2.3" dx="1.475" dy="2.1" layer="1"/>
+<smd name="SH1" x="-2.4625" y="2.3" dx="1.475" dy="2.1" layer="1"/>
+<smd name="SH4" x="-0.8375" y="0" dx="1.175" dy="1.9" layer="1"/>
+<smd name="SH5" x="0.8375" y="0" dx="1.175" dy="1.9" layer="1"/>
+<smd name="SH3" x="-2.9125" y="0" dx="2.375" dy="1.9" layer="1"/>
+<smd name="SH6" x="2.9125" y="0" dx="2.375" dy="1.9" layer="1"/>
+</package>
+</packages>
+<symbols>
+<symbol name="47346-0001">
+<description>MICRO USB R/A-473460001</description>
+<wire x1="0" y1="10.16" x2="0" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="0" y1="-10.16" x2="10.16" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="10.16" y1="-10.16" x2="10.16" y2="10.16" width="0.254" layer="94"/>
+<wire x1="10.16" y1="10.16" x2="0" y2="10.16" width="0.254" layer="94"/>
+<text x="0" y="10.1726" size="1.7802" layer="95" ratio="10">&gt;NAME</text>
+<text x="0" y="-12.7054" size="1.778759375" layer="96" ratio="10">&gt;VALUE</text>
+<pin name="D+" x="-5.08" y="2.54" length="middle"/>
+<pin name="D-" x="-5.08" y="5.08" length="middle"/>
+<pin name="GND" x="-5.08" y="-2.54" length="middle" direction="pwr"/>
+<pin name="ID" x="-5.08" y="0" length="middle" direction="pas"/>
+<pin name="VBUS" x="-5.08" y="7.62" length="middle" direction="pwr"/>
+<pin name="SHIELD" x="-5.08" y="-7.62" length="middle" direction="pas"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="USB_MICRO-B_47346-0001" prefix="P">
+<description>CONN RCPT 5POS MICRO USB R/A  SMD</description>
+<gates>
+<gate name="G$1" symbol="47346-0001" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="MOLEX_47346-0001">
+<connects>
+<connect gate="G$1" pin="D+" pad="3"/>
+<connect gate="G$1" pin="D-" pad="2"/>
+<connect gate="G$1" pin="GND" pad="5"/>
+<connect gate="G$1" pin="ID" pad="4"/>
+<connect gate="G$1" pin="SHIELD" pad="SH1 SH2 SH3 SH4 SH5 SH6"/>
+<connect gate="G$1" pin="VBUS" pad="1"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="AVAILABILITY" value="Unavailable"/>
+<attribute name="DESCRIPTION" value=" USB - micro B USB 2.0 Receptacle Connector 5 Position Surface Mount, Right Angle "/>
+<attribute name="MF" value="Molex"/>
+<attribute name="MOUSER-PURCHASE-URL" value="https://snapeda.com/shop?store=Mouser&amp;id=53503"/>
+<attribute name="MP" value="47346-0001"/>
+<attribute name="PACKAGE" value="None"/>
+<attribute name="PRICE" value="None"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -8630,7 +8603,6 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <attribute name="REV" value="1"/>
 </part>
 <part name="VREG" library="IC-Power" deviceset="AP2111H-3.3TRG1" device=""/>
-<part name="USB" library="Connectors" deviceset="USB_MICRO-B_10118193-0001LF" device=""/>
 <part name="ESP32" library="IC-Microcontroller" deviceset="ESP32-WROOM-32D" device=""/>
 <part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="+3V1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
@@ -8645,7 +8617,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <part name="GND7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
-<part name="PWR_LED" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:6240559/1" value="RED"/>
+<part name="LED_PWR" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:6240559/1" value="RED"/>
 <part name="R1" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="1KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="1k"/>
 <part name="C3" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="0.1UF" device="-0603-25V-5%" package3d_urn="urn:adsk.eagle:package:37414/1" value="0.1uF"/>
 <part name="C5" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="0.1UF" device="-0603-25V-5%" package3d_urn="urn:adsk.eagle:package:37414/1" value="0.1uF"/>
@@ -8682,20 +8654,21 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <part name="R9" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="1KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="1k"/>
 <part name="R10" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="1KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="1k"/>
 <part name="R11" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="1KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="1k"/>
-<part name="LED1" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:6240559/1" value="RED"/>
-<part name="LED2" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:6240559/1" value="YELLOW"/>
-<part name="LED3" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:6240559/1" value="GREEN"/>
+<part name="LED_R" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:6240559/1" value="RED"/>
+<part name="LED_Y" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:6240559/1" value="YELLOW"/>
+<part name="LED_G" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="LED" device="CHIPLED_0805" package3d_urn="urn:adsk.eagle:package:6240559/1" value="GREEN"/>
 <part name="TEMP" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_03" device="" package3d_urn="urn:adsk.eagle:package:38063/1"/>
 <part name="C6" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="0.1UF" device="-0603-25V-5%" package3d_urn="urn:adsk.eagle:package:37414/1" value="0.1uF"/>
 <part name="GND19" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND20" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="DOWNLOAD" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_05" device="" package3d_urn="urn:adsk.eagle:package:38104/1"/>
+<part name="PROG" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_05" device="" package3d_urn="urn:adsk.eagle:package:38104/1"/>
 <part name="GND21" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GPIO" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_08" device="&quot;" package3d_urn="urn:adsk.eagle:package:38138/1"/>
 <part name="+3V7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="P+5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="GND16" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="USB" library="Connectors" deviceset="USB_MICRO-B_47346-0001" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -8733,10 +8706,6 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <instance part="VREG" gate="A" x="124.46" y="152.4" smashed="yes" rot="MR0">
 <attribute name="NAME" x="98.7044" y="158.9786" size="2.0828" layer="95" ratio="6" rot="SMR0"/>
 <attribute name="VALUE" x="106.9594" y="141.1986" size="2.0828" layer="96" ratio="6" rot="SMR0"/>
-</instance>
-<instance part="USB" gate="G$1" x="17.78" y="149.86" smashed="yes" rot="MR0">
-<attribute name="NAME" x="17.78165" y="160.7886" size="1.778" layer="95" rot="MR0"/>
-<attribute name="VALUE" x="50.80193125" y="137.1503" size="1.778" layer="96" rot="MR0"/>
 </instance>
 <instance part="ESP32" gate="G$1" x="50.8" y="53.34" smashed="yes">
 <attribute name="NAME" x="35.7641" y="84.9345" size="1.778" layer="95"/>
@@ -8782,7 +8751,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <instance part="P+3" gate="1" x="45.72" y="170.18" smashed="yes">
 <attribute name="VALUE" x="43.18" y="165.1" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="PWR_LED" gate="G$1" x="45.72" y="142.24" smashed="yes">
+<instance part="LED_PWR" gate="G$1" x="45.72" y="142.24" smashed="yes">
 <attribute name="NAME" x="49.276" y="137.668" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="51.435" y="137.668" size="1.778" layer="96" rot="R90"/>
 </instance>
@@ -8916,15 +8885,15 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <attribute name="NAME" x="219.456" y="147.32" size="1.778" layer="95" font="vector" rot="R90" align="bottom-center"/>
 <attribute name="VALUE" x="222.504" y="147.32" size="1.778" layer="96" font="vector" rot="R90" align="top-center"/>
 </instance>
-<instance part="LED1" gate="G$1" x="195.58" y="137.16" smashed="yes">
+<instance part="LED_R" gate="G$1" x="195.58" y="137.16" smashed="yes">
 <attribute name="NAME" x="199.136" y="132.588" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="201.295" y="132.588" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="LED2" gate="G$1" x="208.28" y="137.16" smashed="yes">
+<instance part="LED_Y" gate="G$1" x="208.28" y="137.16" smashed="yes">
 <attribute name="NAME" x="211.836" y="132.588" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="213.995" y="132.588" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="LED3" gate="G$1" x="220.98" y="137.16" smashed="yes">
+<instance part="LED_G" gate="G$1" x="220.98" y="137.16" smashed="yes">
 <attribute name="NAME" x="224.536" y="132.588" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="226.695" y="132.588" size="1.778" layer="96" rot="R90"/>
 </instance>
@@ -8945,7 +8914,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <instance part="+3V6" gate="G$1" x="132.08" y="27.94" smashed="yes">
 <attribute name="VALUE" x="129.54" y="22.86" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="DOWNLOAD" gate="G$1" x="269.24" y="73.66" smashed="yes" rot="MR0">
+<instance part="PROG" gate="G$1" x="269.24" y="73.66" smashed="yes" rot="MR0">
 <attribute name="VALUE" x="271.78" y="63.754" size="1.778" layer="96" font="vector" rot="MR0"/>
 <attribute name="NAME" x="271.78" y="81.788" size="1.778" layer="95" font="vector" rot="MR0"/>
 </instance>
@@ -8956,14 +8925,18 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <attribute name="VALUE" x="269.24" y="137.414" size="1.778" layer="96" font="vector" rot="MR0"/>
 <attribute name="NAME" x="269.24" y="163.068" size="1.778" layer="95" font="vector" rot="MR0"/>
 </instance>
-<instance part="+3V7" gate="G$1" x="243.84" y="167.64" smashed="yes">
-<attribute name="VALUE" x="241.3" y="162.56" size="1.778" layer="96" rot="R90"/>
+<instance part="+3V7" gate="G$1" x="246.38" y="167.64" smashed="yes">
+<attribute name="VALUE" x="243.84" y="162.56" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="P+5" gate="1" x="248.92" y="167.64" smashed="yes">
-<attribute name="VALUE" x="246.38" y="162.56" size="1.778" layer="96" rot="R90"/>
+<instance part="P+5" gate="1" x="238.76" y="167.64" smashed="yes">
+<attribute name="VALUE" x="236.22" y="162.56" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="GND16" gate="1" x="256.54" y="134.62" smashed="yes">
 <attribute name="VALUE" x="254" y="132.08" size="1.778" layer="96"/>
+</instance>
+<instance part="USB" gate="G$1" x="22.86" y="149.86" smashed="yes" rot="MR0">
+<attribute name="NAME" x="22.86" y="160.0326" size="1.7802" layer="95" ratio="10" rot="MR0"/>
+<attribute name="VALUE" x="22.86" y="137.1546" size="1.778759375" layer="96" ratio="10" rot="MR0"/>
 </instance>
 </instances>
 <busses>
@@ -8976,10 +8949,10 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <wire x1="71.12" y1="15.24" x2="71.12" y2="22.86" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="USB" gate="G$1" pin="GND"/>
 <pinref part="GND1" gate="1" pin="GND"/>
-<wire x1="27.94" y1="147.32" x2="33.02" y2="147.32" width="0.1524" layer="91"/>
 <wire x1="33.02" y1="147.32" x2="33.02" y2="132.08" width="0.1524" layer="91"/>
+<pinref part="USB" gate="G$1" pin="GND"/>
+<wire x1="33.02" y1="147.32" x2="27.94" y2="147.32" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="VREG" gate="A" pin="GND"/>
@@ -9000,7 +8973,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <segment>
 <pinref part="GND5" gate="1" pin="GND"/>
 <wire x1="45.72" y1="137.16" x2="45.72" y2="132.08" width="0.1524" layer="91"/>
-<pinref part="PWR_LED" gate="G$1" pin="C"/>
+<pinref part="LED_PWR" gate="G$1" pin="C"/>
 </segment>
 <segment>
 <pinref part="C1" gate="G$1" pin="2"/>
@@ -9042,17 +9015,17 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <wire x1="167.64" y1="48.26" x2="167.64" y2="40.64" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="LED1" gate="G$1" pin="C"/>
+<pinref part="LED_R" gate="G$1" pin="C"/>
 <pinref part="GND15" gate="1" pin="GND"/>
 <wire x1="195.58" y1="132.08" x2="195.58" y2="129.54" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="LED2" gate="G$1" pin="C"/>
+<pinref part="LED_Y" gate="G$1" pin="C"/>
 <pinref part="GND17" gate="1" pin="GND"/>
 <wire x1="208.28" y1="132.08" x2="208.28" y2="129.54" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="LED3" gate="G$1" pin="C"/>
+<pinref part="LED_G" gate="G$1" pin="C"/>
 <pinref part="GND18" gate="1" pin="GND"/>
 <wire x1="220.98" y1="132.08" x2="220.98" y2="129.54" width="0.1524" layer="91"/>
 </segment>
@@ -9085,7 +9058,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <wire x1="256.54" y1="142.24" x2="256.54" y2="137.16" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="DOWNLOAD" gate="G$1" pin="1"/>
+<pinref part="PROG" gate="G$1" pin="1"/>
 <wire x1="261.62" y1="68.58" x2="259.08" y2="68.58" width="0.1524" layer="91"/>
 <pinref part="GND21" gate="1" pin="GND"/>
 <wire x1="259.08" y1="68.58" x2="259.08" y2="66.04" width="0.1524" layer="91"/>
@@ -9093,10 +9066,10 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </net>
 <net name="+5V" class="0">
 <segment>
-<pinref part="USB" gate="G$1" pin="VUSB"/>
 <pinref part="P+1" gate="1" pin="+5V"/>
-<wire x1="27.94" y1="157.48" x2="33.02" y2="157.48" width="0.1524" layer="91"/>
 <wire x1="33.02" y1="157.48" x2="33.02" y2="167.64" width="0.1524" layer="91"/>
+<pinref part="USB" gate="G$1" pin="VBUS"/>
+<wire x1="33.02" y1="157.48" x2="27.94" y2="157.48" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="P+2" gate="1" pin="+5V"/>
@@ -9114,9 +9087,9 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </segment>
 <segment>
 <pinref part="P+5" gate="1" pin="+5V"/>
-<wire x1="248.92" y1="165.1" x2="248.92" y2="147.32" width="0.1524" layer="91"/>
-<pinref part="GPIO" gate="G$1" pin="3"/>
-<wire x1="248.92" y1="147.32" x2="259.08" y2="147.32" width="0.1524" layer="91"/>
+<wire x1="238.76" y1="165.1" x2="238.76" y2="144.78" width="0.1524" layer="91"/>
+<pinref part="GPIO" gate="G$1" pin="2"/>
+<wire x1="238.76" y1="144.78" x2="259.08" y2="144.78" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="P+4" gate="1" pin="+5V"/>
@@ -9167,9 +9140,13 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </segment>
 <segment>
 <pinref part="+3V7" gate="G$1" pin="+3V3"/>
-<wire x1="243.84" y1="165.1" x2="243.84" y2="144.78" width="0.1524" layer="91"/>
-<pinref part="GPIO" gate="G$1" pin="2"/>
-<wire x1="243.84" y1="144.78" x2="259.08" y2="144.78" width="0.1524" layer="91"/>
+<wire x1="246.38" y1="165.1" x2="246.38" y2="149.86" width="0.1524" layer="91"/>
+<pinref part="GPIO" gate="G$1" pin="3"/>
+<wire x1="246.38" y1="149.86" x2="246.38" y2="147.32" width="0.1524" layer="91"/>
+<wire x1="246.38" y1="147.32" x2="259.08" y2="147.32" width="0.1524" layer="91"/>
+<pinref part="GPIO" gate="G$1" pin="4"/>
+<wire x1="259.08" y1="149.86" x2="246.38" y2="149.86" width="0.1524" layer="91"/>
+<junction x="246.38" y="149.86"/>
 </segment>
 <segment>
 <pinref part="TEMP" gate="J$1" pin="2"/>
@@ -9181,7 +9158,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <net name="N$1" class="0">
 <segment>
 <wire x1="45.72" y1="152.4" x2="45.72" y2="144.78" width="0.1524" layer="91"/>
-<pinref part="PWR_LED" gate="G$1" pin="A"/>
+<pinref part="LED_PWR" gate="G$1" pin="A"/>
 <pinref part="R1" gate="G$1" pin="1"/>
 </segment>
 </net>
@@ -9218,9 +9195,9 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <label x="17.78" y="53.34" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="DOWNLOAD" gate="G$1" pin="3"/>
-<wire x1="261.62" y1="73.66" x2="254" y2="73.66" width="0.1524" layer="91"/>
-<label x="254" y="73.66" size="1.778" layer="95"/>
+<pinref part="PROG" gate="G$1" pin="2"/>
+<wire x1="261.62" y1="71.12" x2="254" y2="71.12" width="0.1524" layer="91"/>
+<label x="254" y="71.12" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="RXD0" class="0">
@@ -9230,9 +9207,9 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <label x="17.78" y="50.8" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="DOWNLOAD" gate="G$1" pin="2"/>
-<wire x1="261.62" y1="71.12" x2="254" y2="71.12" width="0.1524" layer="91"/>
-<label x="254" y="71.12" size="1.778" layer="95"/>
+<pinref part="PROG" gate="G$1" pin="3"/>
+<wire x1="261.62" y1="73.66" x2="254" y2="73.66" width="0.1524" layer="91"/>
+<label x="254" y="73.66" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="IO0" class="0">
@@ -9262,9 +9239,9 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <junction x="241.3" y="63.5"/>
 </segment>
 <segment>
-<pinref part="DOWNLOAD" gate="G$1" pin="4"/>
-<wire x1="261.62" y1="76.2" x2="254" y2="76.2" width="0.1524" layer="91"/>
-<label x="254" y="76.2" size="1.778" layer="95"/>
+<pinref part="PROG" gate="G$1" pin="5"/>
+<wire x1="261.62" y1="78.74" x2="254" y2="78.74" width="0.1524" layer="91"/>
+<label x="254" y="78.74" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="CTS" class="0">
@@ -9282,21 +9259,9 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <junction x="241.3" y="81.28"/>
 </segment>
 <segment>
-<pinref part="DOWNLOAD" gate="G$1" pin="5"/>
-<wire x1="261.62" y1="78.74" x2="254" y2="78.74" width="0.1524" layer="91"/>
-<label x="254" y="78.74" size="1.778" layer="95"/>
-</segment>
-</net>
-<net name="IO16_RELAY" class="0">
-<segment>
-<wire x1="71.12" y1="55.88" x2="88.9" y2="55.88" width="0.1524" layer="91"/>
-<pinref part="ESP32" gate="G$1" pin="IO16"/>
-<label x="73.66" y="55.88" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="RELAY" gate="J$1" pin="3"/>
-<wire x1="185.42" y1="88.9" x2="167.64" y2="88.9" width="0.1524" layer="91"/>
-<label x="167.64" y="88.9" size="1.778" layer="95"/>
+<pinref part="PROG" gate="G$1" pin="4"/>
+<wire x1="261.62" y1="76.2" x2="254" y2="76.2" width="0.1524" layer="91"/>
+<label x="254" y="76.2" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="IO17_OPEN" class="0">
@@ -9374,18 +9339,6 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <wire x1="226.06" y1="63.5" x2="228.6" y2="63.5" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="IO21_LED_R" class="0">
-<segment>
-<pinref part="ESP32" gate="G$1" pin="IO21"/>
-<wire x1="71.12" y1="45.72" x2="88.9" y2="45.72" width="0.1524" layer="91"/>
-<label x="73.66" y="45.72" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="R9" gate="G$1" pin="2"/>
-<wire x1="195.58" y1="152.4" x2="195.58" y2="167.64" width="0.1524" layer="91"/>
-<label x="195.58" y="154.94" size="1.778" layer="95" rot="R90"/>
-</segment>
-</net>
 <net name="IO22_LED_Y" class="0">
 <segment>
 <pinref part="ESP32" gate="G$1" pin="IO22"/>
@@ -9398,61 +9351,25 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <label x="208.28" y="154.94" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
-<net name="IO23_LED_G" class="0">
-<segment>
-<pinref part="ESP32" gate="G$1" pin="IO23"/>
-<wire x1="71.12" y1="40.64" x2="88.9" y2="40.64" width="0.1524" layer="91"/>
-<label x="73.66" y="40.64" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="R11" gate="G$1" pin="2"/>
-<wire x1="220.98" y1="152.4" x2="220.98" y2="167.64" width="0.1524" layer="91"/>
-<label x="220.98" y="154.94" size="1.778" layer="95" rot="R90"/>
-</segment>
-</net>
 <net name="N$5" class="0">
 <segment>
 <pinref part="R9" gate="G$1" pin="1"/>
-<pinref part="LED1" gate="G$1" pin="A"/>
+<pinref part="LED_R" gate="G$1" pin="A"/>
 <wire x1="195.58" y1="142.24" x2="195.58" y2="139.7" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$6" class="0">
 <segment>
 <pinref part="R10" gate="G$1" pin="1"/>
-<pinref part="LED2" gate="G$1" pin="A"/>
+<pinref part="LED_Y" gate="G$1" pin="A"/>
 <wire x1="208.28" y1="142.24" x2="208.28" y2="139.7" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$7" class="0">
 <segment>
 <pinref part="R11" gate="G$1" pin="1"/>
-<pinref part="LED3" gate="G$1" pin="A"/>
+<pinref part="LED_G" gate="G$1" pin="A"/>
 <wire x1="220.98" y1="142.24" x2="220.98" y2="139.7" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="IO25_TEMP" class="0">
-<segment>
-<pinref part="ESP32" gate="G$1" pin="IO25"/>
-<wire x1="71.12" y1="38.1" x2="88.9" y2="38.1" width="0.1524" layer="91"/>
-<label x="73.66" y="38.1" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="TEMP" gate="J$1" pin="3"/>
-<wire x1="134.62" y1="20.32" x2="114.3" y2="20.32" width="0.1524" layer="91"/>
-<label x="114.3" y="20.32" size="1.778" layer="95"/>
-</segment>
-</net>
-<net name="IO13" class="0">
-<segment>
-<pinref part="ESP32" gate="G$1" pin="IO13"/>
-<wire x1="71.12" y1="63.5" x2="88.9" y2="63.5" width="0.1524" layer="91"/>
-<label x="73.66" y="63.5" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="GPIO" gate="G$1" pin="4"/>
-<wire x1="259.08" y1="149.86" x2="251.46" y2="149.86" width="0.1524" layer="91"/>
-<label x="251.46" y="149.86" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="IO26" class="0">
@@ -9467,18 +9384,6 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <label x="251.46" y="152.4" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="IO27" class="0">
-<segment>
-<pinref part="ESP32" gate="G$1" pin="IO27"/>
-<wire x1="71.12" y1="33.02" x2="88.9" y2="33.02" width="0.1524" layer="91"/>
-<label x="73.66" y="33.02" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="GPIO" gate="G$1" pin="6"/>
-<wire x1="259.08" y1="154.94" x2="251.46" y2="154.94" width="0.1524" layer="91"/>
-<label x="251.46" y="154.94" size="1.778" layer="95"/>
-</segment>
-</net>
 <net name="IO32" class="0">
 <segment>
 <pinref part="ESP32" gate="G$1" pin="IO32"/>
@@ -9486,9 +9391,9 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <label x="73.66" y="30.48" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="GPIO" gate="G$1" pin="7"/>
-<wire x1="259.08" y1="157.48" x2="251.46" y2="157.48" width="0.1524" layer="91"/>
-<label x="251.46" y="157.48" size="1.778" layer="95"/>
+<pinref part="GPIO" gate="G$1" pin="8"/>
+<wire x1="259.08" y1="160.02" x2="251.46" y2="160.02" width="0.1524" layer="91"/>
+<label x="251.46" y="160.02" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="IO33" class="0">
@@ -9498,9 +9403,69 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <label x="73.66" y="27.94" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="GPIO" gate="G$1" pin="8"/>
-<wire x1="259.08" y1="160.02" x2="251.46" y2="160.02" width="0.1524" layer="91"/>
-<label x="251.46" y="160.02" size="1.778" layer="95"/>
+<pinref part="GPIO" gate="G$1" pin="7"/>
+<wire x1="259.08" y1="157.48" x2="251.46" y2="157.48" width="0.1524" layer="91"/>
+<label x="251.46" y="157.48" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="IO21_LED_G" class="0">
+<segment>
+<pinref part="R11" gate="G$1" pin="2"/>
+<wire x1="220.98" y1="152.4" x2="220.98" y2="167.64" width="0.1524" layer="91"/>
+<label x="220.98" y="154.94" size="1.778" layer="95" rot="R90"/>
+</segment>
+<segment>
+<pinref part="ESP32" gate="G$1" pin="IO21"/>
+<wire x1="71.12" y1="45.72" x2="88.9" y2="45.72" width="0.1524" layer="91"/>
+<label x="73.66" y="45.72" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="IO23_LED_R" class="0">
+<segment>
+<pinref part="R9" gate="G$1" pin="2"/>
+<wire x1="195.58" y1="152.4" x2="195.58" y2="167.64" width="0.1524" layer="91"/>
+<label x="195.58" y="154.94" size="1.778" layer="95" rot="R90"/>
+</segment>
+<segment>
+<pinref part="ESP32" gate="G$1" pin="IO23"/>
+<wire x1="71.12" y1="40.64" x2="88.9" y2="40.64" width="0.1524" layer="91"/>
+<label x="73.66" y="40.64" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="IO25" class="0">
+<segment>
+<pinref part="ESP32" gate="G$1" pin="IO25"/>
+<wire x1="71.12" y1="38.1" x2="88.9" y2="38.1" width="0.1524" layer="91"/>
+<label x="73.66" y="38.1" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="GPIO" gate="G$1" pin="6"/>
+<wire x1="259.08" y1="154.94" x2="251.46" y2="154.94" width="0.1524" layer="91"/>
+<label x="251.46" y="154.94" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="IO27_TEMP" class="0">
+<segment>
+<pinref part="ESP32" gate="G$1" pin="IO27"/>
+<wire x1="71.12" y1="33.02" x2="88.9" y2="33.02" width="0.1524" layer="91"/>
+<label x="73.66" y="33.02" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="TEMP" gate="J$1" pin="3"/>
+<wire x1="134.62" y1="20.32" x2="114.3" y2="20.32" width="0.1524" layer="91"/>
+<label x="114.3" y="20.32" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="IO13_RELAY" class="0">
+<segment>
+<pinref part="RELAY" gate="J$1" pin="3"/>
+<wire x1="185.42" y1="88.9" x2="167.64" y2="88.9" width="0.1524" layer="91"/>
+<label x="167.64" y="88.9" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="ESP32" gate="G$1" pin="IO13"/>
+<wire x1="71.12" y1="63.5" x2="88.9" y2="63.5" width="0.1524" layer="91"/>
+<label x="73.66" y="63.5" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
@@ -9512,12 +9477,22 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <approved hash="202,1,30.48,66.04,ESP32,SENSOR_VN,,,,"/>
 <approved hash="202,1,30.48,60.96,ESP32,IO34,,,,"/>
 <approved hash="202,1,30.48,58.42,ESP32,IO35,,,,"/>
+<approved hash="104,1,27.94,157.48,USB,VBUS,+5V,,,"/>
 <approved hash="208,1,121.92,149.86,+3V3,out,,,,"/>
 <approved hash="208,1,137.16,167.64,+3V3,sup,,,,"/>
 <approved hash="208,1,76.2,99.06,+3V3,sup,,,,"/>
 <approved hash="208,1,160.02,167.64,+3V3,sup,,,,"/>
 <approved hash="208,1,129.54,96.52,+3V3,sup,,,,"/>
 <approved hash="208,1,132.08,60.96,+3V3,sup,,,,"/>
+<approved hash="208,1,246.38,165.1,+3V3,sup,,,,"/>
+<approved hash="208,1,132.08,25.4,+3V3,sup,,,,"/>
+<approved hash="113,1,188.637,87.7926,RELAY,,,,,"/>
+<approved hash="113,1,135.297,81.4426,OPEN,,,,,"/>
+<approved hash="113,1,137.837,45.8826,CLOSED,,,,,"/>
+<approved hash="113,1,188.637,61.1226,ACTIVE,,,,,"/>
+<approved hash="113,1,137.837,19.2126,TEMP,,,,,"/>
+<approved hash="113,1,264.837,75.0926,PROG,,,,,"/>
+<approved hash="113,1,262.297,152.563,GPIO,,,,,"/>
 </errors>
 </schematic>
 </drawing>
