@@ -3,23 +3,23 @@
 <eagle version="9.6.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="yes"/>
+<setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="1" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.05" altunitdist="mm" altunit="mm"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="yes"/>
+<layer number="1" name="Top" color="4" fill="1" visible="no" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="20" name="Dimension" color="24" fill="1" visible="yes" active="yes"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="yes"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
-<layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="yes"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="yes"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="yes"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
@@ -32,10 +32,10 @@
 <layer number="36" name="bGlue" color="7" fill="5" visible="no" active="yes"/>
 <layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes"/>
 <layer number="38" name="bTest" color="7" fill="1" visible="no" active="yes"/>
-<layer number="39" name="tKeepout" color="4" fill="11" visible="yes" active="yes"/>
-<layer number="40" name="bKeepout" color="1" fill="11" visible="no" active="yes"/>
-<layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
-<layer number="42" name="bRestrict" color="1" fill="10" visible="no" active="yes"/>
+<layer number="39" name="tKeepout" color="4" fill="11" visible="no" active="yes"/>
+<layer number="40" name="bKeepout" color="1" fill="11" visible="yes" active="yes"/>
+<layer number="41" name="tRestrict" color="4" fill="10" visible="no" active="yes"/>
+<layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="yes"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
@@ -45,7 +45,7 @@
 <layer number="49" name="Reference" color="7" fill="1" visible="no" active="yes"/>
 <layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
 <layer number="51" name="tDocu" color="7" fill="1" visible="no" active="yes"/>
-<layer number="52" name="bDocu" color="7" fill="1" visible="no" active="yes"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
 <layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
 <layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
@@ -167,14 +167,14 @@
 <text x="45" y="18" size="1.016" layer="21">RX</text>
 <text x="44.2" y="15.45" size="1.016" layer="21">CTS</text>
 <text x="44.1" y="13" size="1.016" layer="21">DSR</text>
-<text x="34.1" y="20.65" size="0.8128" layer="21">–</text>
+<text x="34.1" y="20.65" size="0.8128" layer="21">-</text>
 <text x="34.1" y="23.1" size="0.8128" layer="21">s</text>
 <text x="24.6" y="23.25" size="0.8128" layer="21">+</text>
-<text x="24.6" y="20.8" size="0.8128" layer="21">–</text>
+<text x="24.6" y="20.8" size="0.8128" layer="21">-</text>
 <text x="42.6" y="23.25" size="0.8128" layer="25">+</text>
-<text x="42.6" y="20.8" size="0.8128" layer="25">–</text>
-<text x="8.6" y="17.8" size="0.8128" layer="21">–</text>
-<text x="8.6" y="23.85" size="0.8128" layer="21">–</text>
+<text x="42.6" y="20.8" size="0.8128" layer="25">-</text>
+<text x="8.6" y="17.8" size="0.8128" layer="21">-</text>
+<text x="8.6" y="23.85" size="0.8128" layer="21">-</text>
 <text x="11.2" y="23.8" size="0.8128" layer="21">+</text>
 <text x="11.15" y="17.7" size="0.8128" layer="21">+</text>
 <text x="13.7" y="17.7" size="0.8128" layer="21">s</text>
@@ -182,7 +182,7 @@
 <text x="1" y="38" size="1.9304" layer="21">GDC</text>
 <text x="1" y="37" size="0.8128" layer="21">Rev A</text>
 <text x="1" y="11" size="1.9304" layer="21">ØN</text>
-<text x="41" y="11" size="2.1844" layer="22" rot="MR0">Garage Door Controller</text>
+<text x="39" y="11" size="1.9304" layer="22" rot="MR0">Garage Door Controller</text>
 <text x="37" y="6" size="1.778" layer="22" rot="MR0">Rev A</text>
 <text x="17" y="6" size="1.778" layer="22" rot="MR0">ØN</text>
 </plain>
