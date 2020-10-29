@@ -16,16 +16,16 @@ enum DoorState {
     MOVING_IN_UNKNOWN_DIRECTION = 5
 };
 
-struct SensorValues {
-    int doorInMotion, doorOpen, doorClosed;
+struct DoorSensorsState {
+    bool doorOpen, doorClosed, doorInMotion;
 };
 
 WiFiClientSecure wifiClientSecure;
-PubSubClient mqttClient(mqtt_broker_host, mqtt_broker_port, &handleIncomingMqttMessage, wifiClientSecure);
+PubSubClient mqttClient(config::mqtt_broker_host, config::mqtt_broker_port, &handleIncomingMqttMessage, wifiClientSecure);
 
 MillisDelay republishCurrentDoorStateDelay;
 MillisDelay flakyDoorOpenerSignalDelay;
-MillisDelay garageDoorPpenerRelaySwitchDelay;
+MillisDelay garageDoorOpenerRelaySwitchDelay;
 
 int lastDoorState = -1;
 int lastDoorMovementState = -1;
@@ -35,38 +35,34 @@ void setup() {
     delay(10);
     connectToWifi();
 
-    wifiClientSecure.setCACert(root_ca_certificate);
-    wifiClientSecure.setCertificate(client_certificate);
-    wifiClientSecure.setPrivateKey(client_private_key);
+    wifiClientSecure.setCACert(config::root_ca_certificate);
+    wifiClientSecure.setCertificate(config::client_certificate);
+    wifiClientSecure.setPrivateKey(config::client_private_key);
 
-    pinMode(garage_door_open_magnetic_sensor_gpio, INPUT_PULLDOWN);
-    pinMode(garage_door_closed_magnetic_sensor_gpio, INPUT_PULLDOWN);
-    pinMode(garage_door_opener_active_sensor_gpio, INPUT_PULLDOWN);
-    pinMode(garage_door_opener_relay_switch_gpio, OUTPUT);
+    pinMode(config::garage_door_opener_relay_switch_gpio, OUTPUT);
 
+    pinMode(config::garage_door_opener_active_sensor_gpio, INPUT_PULLDOWN);
+    pinMode(config::garage_door_open_magnetic_sensor_gpio, INPUT);
+    pinMode(config::garage_door_closed_magnetic_sensor_gpio, INPUT);
+
+    pinMode(config::garage_door_open_indicator_green_led_gpio, OUTPUT);
+    pinMode(config::garage_door_opener_active_indicator_yellow_led_gpio, OUTPUT);
+    pinMode(config::garage_door_closed_indicator_red_led_gpio, OUTPUT);
+    
     republishCurrentDoorStateDelay.start(60000);
 }
 
 void loop() {
     connectToMqttBroker();
 
-    if(garageDoorPpenerRelaySwitchDelay.justFinished()) {
-        digitalWrite(garage_door_opener_relay_switch_gpio, LOW);
+    if(garageDoorOpenerRelaySwitchDelay.justFinished()) {
+        digitalWrite(config::garage_door_opener_relay_switch_gpio, LOW);
     }
 
-    DPRINTLN();
-
-    SensorValues sensorValues = readSensors();
-
-    DPRINT("Sensor readings - garage_door_open_magnetic_sensor: ");
-    DPRINT(sensorValues.doorOpen);
-    DPRINT(", garage_door_closed_magnetic_sensor: ");
-    DPRINT(sensorValues.doorClosed);
-    DPRINT(", garage_door_opener_active_sensor: ");
-    DPRINTLN(sensorValues.doorOpenerRunning);
-
-    int currentDoorState = determineCurrentDoorState(sensorValues, lastDoorState, lastDoorMovementState);
+    DoorSensorsState doorSensorsState = readSensors();
+    int currentDoorState = determineCurrentDoorState(doorSensorsState, lastDoorState, lastDoorMovementState);
     
+    DPRINTLN();
     DPRINT("Current door state: ");
     DPRINTLN(currentDoorState);
 
@@ -75,7 +71,7 @@ void loop() {
         if(republishCurrentDoorStateDelay.justFinished()) {
             republishCurrentDoorStateDelay.restart();
 
-            publishToMqtt(garage_door_current_state_topic, currentDoorState, true);
+            publishToMqtt(config::garage_door_current_state_topic, currentDoorState, true);
         }
     } else {
         /*
@@ -88,7 +84,7 @@ void loop() {
                 flakyDoorOpenerSignalDelay.start(100);
             }
         } else {
-            publishToMqtt(garage_door_current_state_topic, currentDoorState, true);
+            publishToMqtt(config::garage_door_current_state_topic, currentDoorState, true);
             
             lastDoorState = currentDoorState;
             if (currentDoorState == OPENING || currentDoorState == CLOSING) {
@@ -109,7 +105,7 @@ void connectToWifi() {
     DPRINT("Connecting to ");
     DPRINTLN(ssid);
 
-    WiFi.begin(ssid, password);
+    WiFi.begin(config::ssid, config::password);
 
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
@@ -130,7 +126,7 @@ void connectToMqttBroker() {
 
         if (mqttClient.connect("garage-door-controller")) {
             DPRINTLN("connected");
-            mqttClient.subscribe(garage_door_opener_control_topic);
+            mqttClient.subscribe(config::garage_door_opener_control_topic);
             DPRINT("Subscribed to topic ");
             DPRINTLN(garage_door_opener_control_topic);
         } else {
@@ -159,15 +155,15 @@ void handleIncomingMqttMessage(char* topic, byte* message, unsigned int length) 
     DPRINT(": ");
     DPRINTLN(command);
 
-    if (String(topic) == String(garage_door_opener_control_topic) && command == "1") {
+    if (String(topic) == String(config::garage_door_opener_control_topic) && command == "1") {
         triggerGarageDoorOpener();
     }
 }
 
 void triggerGarageDoorOpener() {
     DPRINTLN("Triggering garage door opener relay switch for 500ms");
-    digitalWrite(garage_door_opener_relay_switch_gpio, HIGH);
-    garageDoorPpenerRelaySwitchDelay.start(500);
+    digitalWrite(config::garage_door_opener_relay_switch_gpio, HIGH);
+    garageDoorOpenerRelaySwitchDelay.start(500);
 }
 
 void publishToMqtt(const char* mqttTopic, int value, boolean retained) {
@@ -177,19 +173,23 @@ void publishToMqtt(const char* mqttTopic, int value, boolean retained) {
     DPRINT(" , value: ");
     DPRINT(String(value).c_str());
     DPRINTLN();
-    mqttClient.publish(mqttTopic, String(value).c_str(), retained);
+    //mqttClient.publish(mqttTopic, String(value).c_str(), retained);
 }
 
-struct SensorValues readSensors() {
-    return {
-        digitalRead(garage_door_opener_active_sensor_gpio),
-        digitalRead(garage_door_open_magnetic_sensor_gpio),
-        digitalRead(garage_door_closed_magnetic_sensor_gpio)
-    };
+struct DoorSensorsState readSensors() {
+    bool doorOpen = digitalRead(config::garage_door_open_magnetic_sensor_gpio) == LOW;
+    bool doorClosed = digitalRead(config::garage_door_closed_magnetic_sensor_gpio) == LOW;
+    bool doorInMotion = digitalRead(config::garage_door_opener_active_sensor_gpio) == HIGH;
+
+    digitalWrite(config::garage_door_open_indicator_green_led_gpio, doorOpen ? HIGH : LOW);
+    digitalWrite(config::garage_door_opener_active_indicator_yellow_led_gpio, doorInMotion ? HIGH : LOW);
+    digitalWrite(config::garage_door_closed_indicator_red_led_gpio, doorClosed ? HIGH : LOW);
+
+    return { doorOpen, doorClosed, doorInMotion };
 }
 
-int determineCurrentDoorState(const struct SensorValues &sensorValues, const int &lastDoorState, const int &lastDoorMovementState) {
-    if (sensorValues.doorInMotion == HIGH) {
+int determineCurrentDoorState(const struct DoorSensorsState &doorSensorsState, const int &lastDoorState, const int &lastDoorMovementState) {
+    if (doorSensorsState.doorInMotion) {
         if (lastDoorState == OPENING || lastDoorState == CLOSED) {
             return OPENING;
         } else if (lastDoorState == CLOSING || lastDoorState == OPEN) {
@@ -205,9 +205,9 @@ int determineCurrentDoorState(const struct SensorValues &sensorValues, const int
         } else {
            return MOVING_IN_UNKNOWN_DIRECTION; 
         }
-    } else if (sensorValues.doorOpen == HIGH) {
+    } else if (doorSensorsState.doorOpen) {
         return OPEN;
-    } else if (sensorValues.doorClosed == HIGH) {
+    } else if (doorSensorsState.doorClosed) {
         return CLOSED;
     } else {
         return STOPPED;
