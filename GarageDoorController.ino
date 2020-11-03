@@ -13,11 +13,40 @@ enum DoorState {
     OPENING = 2,
     CLOSING = 3,
     STOPPED = 4,
-    MOVING_IN_UNKNOWN_DIRECTION = 5
+    MOVING_IN_UNKNOWN_DIRECTION = 5,
 };
 
-struct DoorSensorsState {
+class DoorSensorsState {
+    private:
     bool doorOpen, doorClosed, doorInMotion;
+
+    public:
+
+    DoorSensorsState(bool doorOpen, bool doorClosed, bool doorInMotion) {
+        this->doorOpen = doorOpen;
+        this->doorClosed = doorClosed;
+        this->doorInMotion = doorInMotion;
+    }
+
+    DoorState calculateDoorState(DoorState lastDoorState) {
+        if (doorInMotion) {
+            if (lastDoorState == CLOSED) {
+                return OPENING;
+            } else if (lastDoorState == OPEN) {
+                return CLOSING;
+            } else if (lastDoorState == STOPPED) {
+                return MOVING_IN_UNKNOWN_DIRECTION;
+            } else {
+                return lastDoorState; 
+            }
+        } else if (doorOpen) {
+            return OPEN;
+        } else if (doorClosed) {
+            return CLOSED;
+        } else {
+            return STOPPED;
+        }
+    }
 };
 
 WiFiClientSecure wifiClientSecure;
@@ -27,8 +56,7 @@ MillisDelay republishCurrentDoorStateDelay;
 MillisDelay flakyDoorOpenerSignalDelay;
 MillisDelay garageDoorOpenerRelaySwitchDelay;
 
-int lastDoorState = -1;
-int lastDoorMovementState = -1;
+DoorState lastDoorState = CLOSED;
 
 void setup() {
     Serial.begin(115200);
@@ -39,15 +67,9 @@ void setup() {
     wifiClientSecure.setCertificate(config::client_certificate);
     wifiClientSecure.setPrivateKey(config::client_private_key);
 
-    pinMode(config::garage_door_opener_relay_switch_gpio, OUTPUT);
+    mqttClient.setSocketTimeout(10);
 
-    pinMode(config::garage_door_opener_active_sensor_gpio, INPUT_PULLDOWN);
-    pinMode(config::garage_door_open_magnetic_sensor_gpio, INPUT);
-    pinMode(config::garage_door_closed_magnetic_sensor_gpio, INPUT);
-
-    pinMode(config::garage_door_open_indicator_green_led_gpio, OUTPUT);
-    pinMode(config::garage_door_opener_active_indicator_yellow_led_gpio, OUTPUT);
-    pinMode(config::garage_door_closed_indicator_red_led_gpio, OUTPUT);
+    initGPIO();
     
     republishCurrentDoorStateDelay.start(60000);
 }
@@ -59,8 +81,8 @@ void loop() {
         digitalWrite(config::garage_door_opener_relay_switch_gpio, LOW);
     }
 
-    DoorSensorsState doorSensorsState = readSensors();
-    int currentDoorState = determineCurrentDoorState(doorSensorsState, lastDoorState, lastDoorMovementState);
+    DoorSensorsState doorSensorsState = readDoorSensors();
+    DoorState currentDoorState = doorSensorsState.calculateDoorState(lastDoorState);
     
     DPRINTLN();
     DPRINT("Current door state: ");
@@ -85,19 +107,23 @@ void loop() {
             }
         } else {
             publishToMqtt(config::garage_door_current_state_topic, currentDoorState, true);
-            
-            lastDoorState = currentDoorState;
-            if (currentDoorState == OPENING || currentDoorState == CLOSING) {
-                lastDoorMovementState = currentDoorState;
-            } else if (currentDoorState == OPEN) {
-                lastDoorMovementState = OPENING;
-            } else if (currentDoorState = CLOSED) {
-                lastDoorMovementState = CLOSING;
-            }
         }
     }
 
     mqttClient.loop();
+    lastDoorState = currentDoorState;
+}
+
+void initGPIO() {
+    pinMode(config::garage_door_opener_relay_switch_gpio, OUTPUT);
+
+    pinMode(config::garage_door_opener_active_sensor_gpio, INPUT_PULLDOWN);
+    pinMode(config::garage_door_open_magnetic_sensor_gpio, INPUT);
+    pinMode(config::garage_door_closed_magnetic_sensor_gpio, INPUT);
+
+    pinMode(config::garage_door_open_indicator_green_led_gpio, OUTPUT);
+    pinMode(config::garage_door_opener_active_indicator_yellow_led_gpio, OUTPUT);
+    pinMode(config::garage_door_closed_indicator_red_led_gpio, OUTPUT);
 }
 
 void connectToWifi() {
@@ -131,10 +157,8 @@ void connectToMqttBroker() {
             DPRINTLN(garage_door_opener_control_topic);
         } else {
             numberOfFailedConnectionAttemts += 1;
-            int waitMilliseconds = 500;
-            if (numberOfFailedConnectionAttemts > 5) {
-                waitMilliseconds = 5000;
-            }
+            int waitMilliseconds = numberOfFailedConnectionAttemts > 5 ? 5000 : 500;
+
             DPRINT("failed, rc=");
             DPRINT(mqttClient.state());
             DPRINTLN(" trying again in 1 seconds");
@@ -173,10 +197,10 @@ void publishToMqtt(const char* mqttTopic, int value, boolean retained) {
     DPRINT(" , value: ");
     DPRINT(String(value).c_str());
     DPRINTLN();
-    //mqttClient.publish(mqttTopic, String(value).c_str(), retained);
+    mqttClient.publish(mqttTopic, String(value).c_str(), retained);
 }
 
-struct DoorSensorsState readSensors() {
+DoorSensorsState readDoorSensors() {
     bool doorOpen = digitalRead(config::garage_door_open_magnetic_sensor_gpio) == LOW;
     bool doorClosed = digitalRead(config::garage_door_closed_magnetic_sensor_gpio) == LOW;
     bool doorInMotion = digitalRead(config::garage_door_opener_active_sensor_gpio) == HIGH;
@@ -185,31 +209,5 @@ struct DoorSensorsState readSensors() {
     digitalWrite(config::garage_door_opener_active_indicator_yellow_led_gpio, doorInMotion ? HIGH : LOW);
     digitalWrite(config::garage_door_closed_indicator_red_led_gpio, doorClosed ? HIGH : LOW);
 
-    return { doorOpen, doorClosed, doorInMotion };
-}
-
-int determineCurrentDoorState(const struct DoorSensorsState &doorSensorsState, const int &lastDoorState, const int &lastDoorMovementState) {
-    if (doorSensorsState.doorInMotion) {
-        if (lastDoorState == OPENING || lastDoorState == CLOSED) {
-            return OPENING;
-        } else if (lastDoorState == CLOSING || lastDoorState == OPEN) {
-            return CLOSING;
-        } else if (lastDoorState == STOPPED) {
-            if (lastDoorMovementState == OPENING) {
-                return CLOSING;
-            } else if (lastDoorMovementState == CLOSING) {
-                return OPENING;
-            } else {
-                return MOVING_IN_UNKNOWN_DIRECTION;
-            }
-        } else {
-           return MOVING_IN_UNKNOWN_DIRECTION; 
-        }
-    } else if (doorSensorsState.doorOpen) {
-        return OPEN;
-    } else if (doorSensorsState.doorClosed) {
-        return CLOSED;
-    } else {
-        return STOPPED;
-    }
+    return DoorSensorsState(doorOpen, doorClosed, doorInMotion);
 }
