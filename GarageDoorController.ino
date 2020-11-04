@@ -75,7 +75,7 @@ void setup() {
 }
 
 void loop() {
-    connectToMqttBroker();
+    ensureConnectionToMqttBroker();
 
     if(garageDoorOpenerRelaySwitchDelay.justFinished()) {
         digitalWrite(config::garage_door_opener_relay_switch_gpio, LOW);
@@ -92,7 +92,6 @@ void loop() {
         flakyDoorOpenerSignalDelay.stop();
         if(republishCurrentDoorStateDelay.justFinished()) {
             republishCurrentDoorStateDelay.restart();
-
             publishToMqtt(config::garage_door_current_state_topic, currentDoorState, true);
         }
     } else {
@@ -144,7 +143,7 @@ void connectToWifi() {
     DPRINTLN(WiFi.localIP());
 }
 
-void connectToMqttBroker() {
+void ensureConnectionToMqttBroker() {
     while (!mqttClient.connected()) {
         int numberOfFailedConnectionAttemts = 0;
         DPRINTLN();
