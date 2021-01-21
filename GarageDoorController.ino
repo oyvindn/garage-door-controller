@@ -57,7 +57,7 @@ void setup() {
 
     initGPIO();
 
-    republishCurrentDoorStateDelay.start(60000);
+    republishCurrentDoorStateDelay.start(MQTT_REPUBLISH_INTERVAL_MS);
 }
 
 void loop() {
@@ -126,11 +126,10 @@ bool ensureWifiConnection(){
         } else {
             Serial.println("[WIFI] FAILED");
             delay(WIFI_RECOVER_TIME_MS);
-            return false;
         }
     }
 
-    return true;
+    return WiFi.isConnected();
 }
 
 bool ensureConnectionToMqttBroker() {
@@ -138,7 +137,7 @@ bool ensureConnectionToMqttBroker() {
         int numberOfFailedConnectionAttemts = 0;
         Serial.println("[MQTT] Connecting");
 
-        if (mqttClient.connect("garage-door-controller")) {
+        if (mqttClient.connect(MQTT_CLIENT_ID)) {
             Serial.println("[MQTT] Connected to broker");
             mqttClient.subscribe(GARAGE_DOOR_OPENER_CONTROL_TOPIC);
             Serial.print("[MQTT] Subscribed to topic: ");
@@ -146,8 +145,10 @@ bool ensureConnectionToMqttBroker() {
         } else {
             Serial.print("[MQTT] Connection failed, rc=");
             Serial.print(mqttClient.state());
-            Serial.println(" - trying again in 10 seconds");
-            delay(10000);
+            Serial.print(" - trying again in ");
+            Serial.print(MQTT_RECOVER_TIME_MS);
+            Serial.println(" milliseconds");
+            delay(MQTT_RECOVER_TIME_MS);
         }
     }
 

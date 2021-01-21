@@ -5,7 +5,7 @@
     // WiFi settings
     #define WIFI_SSID "WIFI_SSID"
     #define WIFI_PASSWORD "WIFI_PASSWORD"
-    
+
     #define WIFI_TIMEOUT_MS 10000 // 10 second WiFi connection timeout
     #define WIFI_RECOVER_TIME_MS 20000 // Wait 20 seconds after a failed connection attempt
 
@@ -27,13 +27,17 @@
     #define UNUSED_GPIO_3 32
     #define UNUSED_GPIO_4 33
 
-    // MQTT broker settings
+    // MQTT settings
     #define MQTT_BROKER_HOST "MQTT_HOST"
     #define MQTT_BROKER_PORT 8883
 
-    // MQTT topics
+    #define MQTT_CLIENT_ID "garage-door-controller"
+
     #define GARAGE_DOOR_OPENER_CONTROL_TOPIC "home/garage/door-opener/control"
     #define GARAGE_DOOR_CURRENT_STATE_TOPIC "home/garage/door/current-state"
+
+    #define MQTT_RECOVER_TIME_MS 10000
+    #define MQTT_REPUBLISH_INTERVAL_MS 10000
 
     // TLS settings
     #define ROOT_CA_CERTIFICATE "-----BEGIN CERTIFICATE-----\nRoot CA Certificate\n-----END CERTIFICATE-----\n"
