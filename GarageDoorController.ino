@@ -32,7 +32,7 @@ void handleIncomingMqttMessage(char* topic, byte* message, unsigned int length) 
     }
 
     if (String(topic) == String(GARAGE_DOOR_OPENER_CONTROL_TOPIC) && command == "1") {
-        triggerGarageDoorOpener();
+        turnOnGarageDoorOpenerRelayTriggerSwitch();
     }
 }
 
@@ -40,7 +40,7 @@ WiFiClientSecure wifiClientSecure;
 PubSubClient mqttClient(MQTT_BROKER_HOST, MQTT_BROKER_PORT, &handleIncomingMqttMessage, wifiClientSecure);
 
 MillisDelay republishCurrentDoorStateDelay;
-MillisDelay flakyDoorOpenerSignalDelay;
+MillisDelay flakyDoorInMotionSensorDelay;
 MillisDelay garageDoorOpenerRelaySwitchDelay;
 
 DoorState lastDoorState = CLOSED;
@@ -61,32 +61,27 @@ void setup() {
 }
 
 void loop() {
-    if(ensureWifiConnection() && ensureConnectionToMqttBroker()) {
-
-        if (garageDoorOpenerRelaySwitchDelay.justFinished()) {
-            digitalWrite(GARAGE_DOOR_OPENER_RELAY_SWITCH_GPIO, LOW);
-        }
+    if (ensureWifiConnection() && ensureConnectionToMqttBroker()) {
+        runScheduledTasks();
 
         DoorSensorsReading doorSensorsState = readDoorSensors();
         DoorState currentDoorState = calculateDoorState(doorSensorsState, lastDoorState);
 
-        if (currentDoorState == lastDoorState) {
-            flakyDoorOpenerSignalDelay.stop();
-            if (republishCurrentDoorStateDelay.justFinished()) {
-                republishCurrentDoorStateDelay.restart();
-                publishToMqtt(GARAGE_DOOR_CURRENT_STATE_TOPIC, currentDoorState, true);
-            }
-        } else {
+        if (currentDoorState != lastDoorState) {
             /*
             * The garage_door_opener_active_sensor use a output signal from the garage door opener ment for controlling a warning light.
             * This output signal is a bit flaky and will sporadically read as HIGH, even though the opener is inactive.
             * To remedy this we make sure the sinal is HIGH for å minimum time frame to make sure the opener is actual active and the door in motion.
             */
-            if ((currentDoorState == OPENING || currentDoorState == CLOSING || currentDoorState == MOVING_IN_UNKNOWN_DIRECTION) && !flakyDoorOpenerSignalDelay.justFinished()) {
-                if (!flakyDoorOpenerSignalDelay.isRunning()) {
-                    flakyDoorOpenerSignalDelay.start(100);
-                }
+            if (doorSensorsState.doorInMotion && !flakyDoorInMotionSensorDelay.justFinished() && !flakyDoorInMotionSensorDelay.isRunning()) {
+                flakyDoorInMotionSensorDelay.start(100);
             } else {
+                publishToMqtt(GARAGE_DOOR_CURRENT_STATE_TOPIC, currentDoorState, true);
+            }
+        } else {
+            flakyDoorInMotionSensorDelay.stop();
+            if (republishCurrentDoorStateDelay.justFinished()) {
+                republishCurrentDoorStateDelay.restart();
                 publishToMqtt(GARAGE_DOOR_CURRENT_STATE_TOPIC, currentDoorState, true);
             }
         }
@@ -155,9 +150,15 @@ bool ensureConnectionToMqttBroker() {
     return mqttClient.connected();
 }
 
-void triggerGarageDoorOpener() {
+void turnOnGarageDoorOpenerRelayTriggerSwitch() {
     digitalWrite(GARAGE_DOOR_OPENER_RELAY_SWITCH_GPIO, HIGH);
     garageDoorOpenerRelaySwitchDelay.start(500);
+}
+
+void runScheduledTasks() {
+    if (garageDoorOpenerRelaySwitchDelay.justFinished() || !garageDoorOpenerRelaySwitchDelay.isRunning()) {
+        digitalWrite(GARAGE_DOOR_OPENER_RELAY_SWITCH_GPIO, LOW);
+    }
 }
 
 void publishToMqtt(const char* mqttTopic, int value, boolean retained) {
