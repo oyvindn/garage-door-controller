@@ -8,7 +8,7 @@
 
     #define WIFI_RECOVER_TIME_MS 10000 // Wait 10 seconds after a failed connection attempt
 
-    // OTA settings
+    // OTA Update settings
     #define OTA_HOSTNAME "gdc-esp32"
     #define OTA_PASSWORD_MD5_HASH "d20bd8d97c20493e7cee1630ba61d6f0"
 
