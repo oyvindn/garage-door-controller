@@ -4,7 +4,6 @@
 #include <PubSubClient.h>
 
 #include "Config.h"
-#include "Debug.h"
 #include "MillisDelay.h"
 
 enum DoorState {
@@ -99,41 +98,40 @@ void initGPIO() {
 }
 
 void connectToWifi() {
-    DPRINTLN();
-    DPRINT("Connecting to ");
-    DPRINTLN(ssid);
+    Serial.println();
+    Serial.print("Connecting to ");
+    Serial.println(config::ssid);
 
     WiFi.begin(config::ssid, config::password);
 
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
-        DPRINT(".");
+        Serial.print(".");
     }
 
-    DPRINTLN();
-    DPRINTLN("WiFi connected");
-    DPRINT("IP address: ");
-    DPRINTLN(WiFi.localIP());
+    Serial.println();
+    Serial.println("WiFi connected");
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
 }
 
 void ensureConnectionToMqttBroker() {
     while (!mqttClient.connected()) {
         int numberOfFailedConnectionAttemts = 0;
-        DPRINTLN();
-        DPRINT("Attempting MQTT connection...");
+        Serial.println("Attempting MQTT connection...");
 
         if (mqttClient.connect("garage-door-controller")) {
-            DPRINTLN("connected");
+            Serial.println("Connected to MQTT broker");
             mqttClient.subscribe(config::garage_door_opener_control_topic);
-            DPRINT("Subscribed to topic ");
-            DPRINTLN(garage_door_opener_control_topic);
+            Serial.print("Subscribed to topic: ");
+            Serial.println(config::garage_door_opener_control_topic);
         } else {
             numberOfFailedConnectionAttemts += 1;
             int waitMilliseconds = numberOfFailedConnectionAttemts > 5 ? 5000 : 500;
 
-            DPRINT("failed, rc=");
-            DPRINT(mqttClient.state());
-            DPRINTLN(" trying again in 1 seconds");
+            Serial.print("MQTT connection failed, rc=");
+            Serial.print(mqttClient.state());
+            Serial.print(" trying again in 1 seconds");
             delay(waitMilliseconds);
         }
     }
@@ -146,29 +144,17 @@ void handleIncomingMqttMessage(char* topic, byte* message, unsigned int length) 
         command += (char)message[i];
     }
 
-    DPRINT("Message arrived on topic ");
-    DPRINT(topic);
-    DPRINT(": ");
-    DPRINTLN(command);
-
     if (String(topic) == String(config::garage_door_opener_control_topic) && command == "1") {
         triggerGarageDoorOpener();
     }
 }
 
 void triggerGarageDoorOpener() {
-    DPRINTLN("Triggering garage door opener relay switch for 500ms");
     digitalWrite(config::garage_door_opener_relay_switch_gpio, HIGH);
     garageDoorOpenerRelaySwitchDelay.start(500);
 }
 
 void publishToMqtt(const char* mqttTopic, int value, boolean retained) {
-    DPRINTLN();
-    DPRINT("Publishing to MQTT - topic: ");
-    DPRINT(mqttTopic);
-    DPRINT(" , value: ");
-    DPRINT(String(value).c_str());
-    DPRINTLN();
     mqttClient.publish(mqttTopic, String(value).c_str(), retained);
 }
 
