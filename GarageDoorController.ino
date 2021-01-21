@@ -16,36 +16,13 @@ enum DoorState {
     MOVING_IN_UNKNOWN_DIRECTION = 5,
 };
 
-class DoorSensorsState {
-    private:
+struct DoorSensorsReading {
     bool doorOpen, doorClosed, doorInMotion;
 
-    public:
-
-    DoorSensorsState(bool doorOpen, bool doorClosed, bool doorInMotion) {
+    DoorSensorsReading(bool doorOpen, bool doorClosed, bool doorInMotion) {
         this->doorOpen = doorOpen;
         this->doorClosed = doorClosed;
         this->doorInMotion = doorInMotion;
-    }
-
-    DoorState calculateDoorState(DoorState lastDoorState) {
-        if (doorInMotion) {
-            if (lastDoorState == CLOSED) {
-                return OPENING;
-            } else if (lastDoorState == OPEN) {
-                return CLOSING;
-            } else if (lastDoorState == STOPPED) {
-                return MOVING_IN_UNKNOWN_DIRECTION;
-            } else {
-                return lastDoorState; 
-            }
-        } else if (doorOpen) {
-            return OPEN;
-        } else if (doorClosed) {
-            return CLOSED;
-        } else {
-            return STOPPED;
-        }
     }
 };
 
@@ -81,12 +58,8 @@ void loop() {
         digitalWrite(config::garage_door_opener_relay_switch_gpio, LOW);
     }
 
-    DoorSensorsState doorSensorsState = readDoorSensors();
-    DoorState currentDoorState = doorSensorsState.calculateDoorState(lastDoorState);
-    
-    DPRINTLN();
-    DPRINT("Current door state: ");
-    DPRINTLN(currentDoorState);
+    DoorSensorsReading doorSensorsState = readDoorSensors();
+    DoorState currentDoorState = calculateDoorState(doorSensorsState, lastDoorState);
 
     if (currentDoorState == lastDoorState) {
         flakyDoorOpenerSignalDelay.stop();
@@ -199,7 +172,7 @@ void publishToMqtt(const char* mqttTopic, int value, boolean retained) {
     mqttClient.publish(mqttTopic, String(value).c_str(), retained);
 }
 
-DoorSensorsState readDoorSensors() {
+DoorSensorsReading readDoorSensors() {
     bool doorOpen = digitalRead(config::garage_door_open_magnetic_sensor_gpio) == LOW;
     bool doorClosed = digitalRead(config::garage_door_closed_magnetic_sensor_gpio) == LOW;
     bool doorInMotion = digitalRead(config::garage_door_opener_active_sensor_gpio) == HIGH;
@@ -208,5 +181,25 @@ DoorSensorsState readDoorSensors() {
     digitalWrite(config::garage_door_opener_active_indicator_yellow_led_gpio, doorInMotion ? HIGH : LOW);
     digitalWrite(config::garage_door_closed_indicator_red_led_gpio, doorClosed ? HIGH : LOW);
 
-    return DoorSensorsState(doorOpen, doorClosed, doorInMotion);
+    return DoorSensorsReading(doorOpen, doorClosed, doorInMotion);
+}
+
+DoorState calculateDoorState(DoorSensorsReading doorSensorReading, DoorState lastDoorState) {
+    if (doorSensorReading.doorInMotion) {
+        if (lastDoorState == CLOSED) {
+            return OPENING;
+        } else if (lastDoorState == OPEN) {
+            return CLOSING;
+        } else if (lastDoorState == STOPPED) {
+            return MOVING_IN_UNKNOWN_DIRECTION;
+        } else {
+            return lastDoorState;
+        }
+    } else if (doorSensorReading.doorOpen) {
+        return OPEN;
+    } else if (doorSensorReading.doorClosed) {
+        return CLOSED;
+    } else {
+        return STOPPED;
+    }
 }
