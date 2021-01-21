@@ -6,8 +6,11 @@
     #define WIFI_SSID "WIFI_SSID"
     #define WIFI_PASSWORD "WIFI_PASSWORD"
 
-    #define WIFI_TIMEOUT_MS 10000 // 10 second WiFi connection timeout
-    #define WIFI_RECOVER_TIME_MS 20000 // Wait 20 seconds after a failed connection attempt
+    #define WIFI_RECOVER_TIME_MS 10000 // Wait 10 seconds after a failed connection attempt
+
+    // OTA settings
+    #define OTA_HOSTNAME "gdc-esp32"
+    #define OTA_PASSWORD_MD5_HASH "d20bd8d97c20493e7cee1630ba61d6f0"
 
     // IO pins settings
     #define GARAGE_DOOR_OPENER_RELAY_SWITCH_GPIO 13

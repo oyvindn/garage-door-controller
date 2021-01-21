@@ -1,4 +1,7 @@
 #include <Arduino.h>
+#include <ESPmDNS.h>
+#include <WiFiUdp.h>
+#include <ArduinoOTA.h>
 #include <WiFiClientSecure.h>
 #include <PubSubClient.h>
 
@@ -39,21 +42,49 @@ void setup() {
     Serial.begin(115200);
     delay(10);
 
+    initGPIO();
+
     wifiClientSecure.setCACert(ROOT_CA_CERTIFICATE);
     wifiClientSecure.setCertificate(CLIENT_CERTIFICATE);
     wifiClientSecure.setPrivateKey(CLIENT_PRIVATE_KEY);
 
     mqttClient.setSocketTimeout(10);
 
-    initGPIO();
+    ArduinoOTA.setHostname(OTA_HOSTNAME);
+    ArduinoOTA.setPasswordHash(OTA_PASSWORD_MD5_HASH);
+
+    ArduinoOTA.onStart([]() {
+      String type;
+      if (ArduinoOTA.getCommand() == U_FLASH) {
+        type = "sketch";
+      } else {
+        type = "filesystem";
+      }
+      Serial.println("[OTA] Start updating " + type);
+    }).onEnd([]() {
+      Serial.println("\n[OTA] End");
+    }).onProgress([](unsigned int progress, unsigned int total) {
+      Serial.printf("[OTA] Progress: %u%%\r", (progress / (total / 100)));
+    }).onError([](ota_error_t error) {
+      Serial.printf("[OTA] Error[%u]: ", error);
+      if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
+      else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
+      else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
+      else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
+      else if (error == OTA_END_ERROR) Serial.println("End Failed");
+    });
+
+    ArduinoOTA.begin();
 
     republishCurrentDoorStateDelay.start(MQTT_REPUBLISH_INTERVAL_MS);
 }
 
 void loop() {
-    if (ensureWifiConnection() && ensureConnectionToMqttBroker()) {
-        runScheduledTasks();
+    ensureGarageDoorOpenerTriggerRelease();
+    ensureWifiConnection();
+    ArduinoOTA.handle();
 
+    if(connectedToMqttBroker()) {
         DoorSensorsReading doorSensorsState = readDoorSensors();
         DoorState currentDoorState = calculateDoorState(doorSensorsState, lastDoorState);
 
@@ -93,33 +124,24 @@ void initGPIO() {
     pinMode(GARAGE_DOOR_CLOSED_INDICATOR_RED_LED_GPIO, OUTPUT);
 }
 
-bool ensureWifiConnection(){
+void ensureWifiConnection(){
     if (WiFi.status() != WL_CONNECTED){
         Serial.println("[WIFI] Connecting");
         WiFi.mode(WIFI_STA);
         WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
-        unsigned long startAttemptTime = millis();
-
-        // Keep looping while we're not connected and haven't reached the timeout
-        while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < WIFI_TIMEOUT_MS){}
-
-        // When we couldn't make a WiFi connection (or the timeout expired)
-        // sleep for a while and then retry.
-        if (WiFi.status() == WL_CONNECTED){
+        if (WiFi.waitForConnectResult() == WL_CONNECTED){
             Serial.println("[WIFI] Connected: " + WiFi.localIP());
         } else {
-            Serial.println("[WIFI] FAILED");
+            Serial.println("[WIFI] Failed");
             delay(WIFI_RECOVER_TIME_MS);
+            ESP.restart();
         }
     }
-
-    return WiFi.isConnected();
 }
 
-bool ensureConnectionToMqttBroker() {
+bool connectedToMqttBroker() {
     if (!mqttClient.connected()) {
-        int numberOfFailedConnectionAttemts = 0;
         Serial.println("[MQTT] Connecting");
 
         if (mqttClient.connect(MQTT_CLIENT_ID)) {
@@ -129,10 +151,7 @@ bool ensureConnectionToMqttBroker() {
             Serial.println(GARAGE_DOOR_OPENER_CONTROL_TOPIC);
         } else {
             Serial.print("[MQTT] Connection failed, rc=");
-            Serial.print(mqttClient.state());
-            Serial.print(" - trying again in ");
-            Serial.print(MQTT_RECOVER_TIME_MS);
-            Serial.println(" milliseconds");
+            Serial.println(mqttClient.state());
             delay(MQTT_RECOVER_TIME_MS);
         }
     }
@@ -148,16 +167,16 @@ void handleIncomingMqttMessage(char* topic, byte* message, unsigned int length) 
     }
 
     if (String(topic) == String(GARAGE_DOOR_OPENER_CONTROL_TOPIC) && command == "1") {
-        turnOnGarageDoorOpenerRelayTriggerSwitch();
+        triggerGarageDoorOpener();
     }
 }
 
-void turnOnGarageDoorOpenerRelayTriggerSwitch() {
+void triggerGarageDoorOpener() {
     digitalWrite(GARAGE_DOOR_OPENER_RELAY_SWITCH_GPIO, HIGH);
     garageDoorOpenerRelaySwitchDelay.start(500);
 }
 
-void runScheduledTasks() {
+void ensureGarageDoorOpenerTriggerRelease() {
     if (garageDoorOpenerRelaySwitchDelay.justFinished() || !garageDoorOpenerRelaySwitchDelay.isRunning()) {
         digitalWrite(GARAGE_DOOR_OPENER_RELAY_SWITCH_GPIO, LOW);
     }
