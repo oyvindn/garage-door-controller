@@ -24,17 +24,7 @@ struct DoorSensorsReading {
     }
 };
 
-void handleIncomingMqttMessage(char* topic, byte* message, unsigned int length) {
-    String command;
-
-    for (int i = 0; i < length; i++) {
-        command += (char)message[i];
-    }
-
-    if (String(topic) == String(GARAGE_DOOR_OPENER_CONTROL_TOPIC) && command == "1") {
-        turnOnGarageDoorOpenerRelayTriggerSwitch();
-    }
-}
+void handleIncomingMqttMessage(char* topic, byte* message, unsigned int length);
 
 WiFiClientSecure wifiClientSecure;
 PubSubClient mqttClient(MQTT_BROKER_HOST, MQTT_BROKER_PORT, &handleIncomingMqttMessage, wifiClientSecure);
@@ -148,6 +138,18 @@ bool ensureConnectionToMqttBroker() {
     }
 
     return mqttClient.connected();
+}
+
+void handleIncomingMqttMessage(char* topic, byte* message, unsigned int length) {
+    String command;
+
+    for (int i = 0; i < length; i++) {
+        command += (char)message[i];
+    }
+
+    if (String(topic) == String(GARAGE_DOOR_OPENER_CONTROL_TOPIC) && command == "1") {
+        turnOnGarageDoorOpenerRelayTriggerSwitch();
+    }
 }
 
 void turnOnGarageDoorOpenerRelayTriggerSwitch() {
