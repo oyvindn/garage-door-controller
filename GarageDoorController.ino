@@ -44,9 +44,11 @@ void setup() {
 
     initGPIO();
 
-    wifiClientSecure.setCACert(ROOT_CA_CERTIFICATE);
-    wifiClientSecure.setCertificate(CLIENT_CERTIFICATE);
-    wifiClientSecure.setPrivateKey(CLIENT_PRIVATE_KEY);
+    ensureWifiConnection();
+
+    wifiClientSecure.setCACert(root_ca_certificate);
+    wifiClientSecure.setCertificate(client_certificate);
+    wifiClientSecure.setPrivateKey(client_private_key);
 
     mqttClient.setSocketTimeout(10);
 
@@ -124,7 +126,7 @@ void initGPIO() {
     pinMode(GARAGE_DOOR_CLOSED_INDICATOR_RED_LED_GPIO, OUTPUT);
 }
 
-void ensureWifiConnection(){
+void ensureWifiConnection() {
     if (WiFi.status() != WL_CONNECTED){
         Serial.println("[WIFI] Connecting");
         WiFi.mode(WIFI_STA);
@@ -152,6 +154,7 @@ bool connectedToMqttBroker() {
         } else {
             Serial.print("[MQTT] Connection failed, rc=");
             Serial.println(mqttClient.state());
+            //TODO: replace delay() with non blocking delay
             delay(MQTT_RECOVER_TIME_MS);
         }
     }
