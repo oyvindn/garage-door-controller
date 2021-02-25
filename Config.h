@@ -6,7 +6,7 @@
 #define WIFI_SSID "WIFI_SSID"
 #define WIFI_PASSWORD "WIFI_PASSWORD"
 
-#define WIFI_RECOVER_TIME_MS 10000 // Wait 10 seconds after a failed connection attempt
+#define WIFI_RECOVER_TIME_MS 10000 // Wait time after a failed connection attempt
 
 // OTA Update settings
 #define OTA_HOSTNAME "gdc-esp32"
@@ -39,7 +39,7 @@
 #define GARAGE_DOOR_OPENER_CONTROL_TOPIC "home/garage/door-opener/control"
 #define GARAGE_DOOR_CURRENT_STATE_TOPIC "home/garage/door/current-state"
 
-#define MQTT_RECOVER_TIME_MS 10000
+#define MQTT_RECOVER_TIME_MS 10000 // Wait time after a failed connection attempt
 #define MQTT_REPUBLISH_INTERVAL_MS 10000
 
 // TLS settings
