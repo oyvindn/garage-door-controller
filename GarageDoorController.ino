@@ -35,6 +35,7 @@ PubSubClient mqttClient(MQTT_BROKER_HOST, MQTT_BROKER_PORT, &handleIncomingMqttM
 MillisDelay republishCurrentDoorStateDelay;
 MillisDelay flakyDoorInMotionSensorDelay;
 MillisDelay garageDoorOpenerRelaySwitchDelay;
+MillisDelay mqttReconnectDelay;
 
 DoorState lastDoorState = CLOSED;
 
@@ -84,7 +85,6 @@ void setup() {
 void loop() {
     ensureGarageDoorOpenerTriggerRelease();
     ensureWifiConnection();
-    ArduinoOTA.handle();
 
     if(connectedToMqttBroker()) {
         DoorSensorsReading doorSensorsState = readDoorSensors();
@@ -112,6 +112,8 @@ void loop() {
         mqttClient.loop();
         lastDoorState = currentDoorState;
     }
+
+    ArduinoOTA.handle();
 }
 
 void initGPIO() {
@@ -143,7 +145,7 @@ void ensureWifiConnection() {
 }
 
 bool connectedToMqttBroker() {
-    if (!mqttClient.connected()) {
+    if (!mqttClient.connected() && (!mqttReconnectDelay.isRunning()) || mqttReconnectDelay.justFinished()) {
         Serial.println("[MQTT] Connecting");
 
         if (mqttClient.connect(MQTT_CLIENT_ID)) {
@@ -154,8 +156,7 @@ bool connectedToMqttBroker() {
         } else {
             Serial.print("[MQTT] Connection failed, rc=");
             Serial.println(mqttClient.state());
-            //TODO: replace delay() with non blocking delay
-            delay(MQTT_RECOVER_TIME_MS);
+            mqttReconnectDelay.start(MQTT_RECOVER_TIME_MS);
         }
     }
 
