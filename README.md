@@ -14,6 +14,6 @@ My garage door opener also has a 5V output for a warning light, which I use to c
 
 ## Hardware
 
-* [Adafruit HUZZAH32 ESP32 Feather](https://learn.adafruit.com/adafruit-huzzah32-esp32-feather/)
+* [ESP32-WROOM-32D](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_esp32-wroom-32u_datasheet_en.pdf)
 * [2x MC-38 Wired Door Window Sensor](https://www.ebay.com/sch/i.html?_nkw=MC-38+sensor)
 * [5V relay](https://www.ebay.com/sch/i.html?_nkw=5v+relay)
