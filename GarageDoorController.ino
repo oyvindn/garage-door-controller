@@ -96,10 +96,11 @@ void loop() {
             * This output signal is a bit flaky and will sporadically read as HIGH, even though the opener is inactive.
             * To remedy this we make sure the sinal is HIGH for å minimum time frame to make sure the opener is actual active and the door in motion.
             */
-            if (doorSensorsState.doorInMotion && !flakyDoorInMotionSensorDelay.justFinished() && !flakyDoorInMotionSensorDelay.isRunning()) {
+            if (doorSensorsState.doorInMotion && !flakyDoorInMotionSensorDelay.isRunning()) {
                 flakyDoorInMotionSensorDelay.start(100);
-            } else {
+            } else if(!doorSensorsState.doorInMotion || flakyDoorInMotionSensorDelay.justFinished()) {
                 publishToMqtt(GARAGE_DOOR_CURRENT_STATE_TOPIC, currentDoorState, true);
+                lastDoorState = currentDoorState;
             }
         } else {
             flakyDoorInMotionSensorDelay.stop();
@@ -110,7 +111,6 @@ void loop() {
         }
 
         mqttClient.loop();
-        lastDoorState = currentDoorState;
     }
 
     ArduinoOTA.handle();
