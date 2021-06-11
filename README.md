@@ -10,7 +10,7 @@ My garage door opener also has a 5V output for a warning light, which I use to c
 ## Dependencies
 * [Arduino core for the ESP32](https://github.com/espressif/arduino-esp32)
 * [Arduino Client for MQTT](https://pubsubclient.knolleary.net/index.html)
-* [One Wiew](https://github.com/PaulStoffregen/OneWire)
+* [One Wire](https://github.com/PaulStoffregen/OneWire)
 * [Arduino Library for Maxim Temperature Integrated Circuits](https://github.com/milesburton/Arduino-Temperature-Control-Library)
 
 ## Hardware
