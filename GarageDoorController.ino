@@ -4,6 +4,8 @@
 #include <ArduinoOTA.h>
 #include <WiFiClientSecure.h>
 #include <PubSubClient.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
 #include "Config.h"
 #include "MillisDelay.h"
@@ -32,10 +34,14 @@ void handleIncomingMqttMessage(char* topic, byte* message, unsigned int length);
 WiFiClientSecure wifiClientSecure;
 PubSubClient mqttClient(MQTT_BROKER_HOST, MQTT_BROKER_PORT, &handleIncomingMqttMessage, wifiClientSecure);
 
+OneWire oneWire(GARAGE_OUTSIDE_TEMP_SENSOR_GPIO);
+DallasTemperature tempSensors(&oneWire);
+
 MillisDelay republishCurrentDoorStateDelay;
 MillisDelay flakyDoorInMotionSensorDelay;
 MillisDelay garageDoorOpenerRelaySwitchDelay;
 MillisDelay mqttReconnectDelay;
+MillisDelay readAndPublishOutdoorTempDelay;
 
 DoorState lastDoorState = CLOSED;
 
@@ -44,6 +50,8 @@ void setup() {
     delay(10);
 
     initGPIO();
+
+    tempSensors.begin();
 
     ensureWifiConnection();
 
@@ -110,6 +118,8 @@ void loop() {
             }
         }
 
+        readAndPublishOutdoorTemp();
+
         mqttClient.loop();
     }
 
@@ -145,7 +155,7 @@ void ensureWifiConnection() {
 }
 
 bool connectedToMqttBroker() {
-    if (!mqttClient.connected() && (!mqttReconnectDelay.isRunning()) || mqttReconnectDelay.justFinished()) {
+    if (!mqttClient.connected() && (!mqttReconnectDelay.isRunning() || mqttReconnectDelay.justFinished())) {
         Serial.println("[MQTT] Connecting");
 
         if (mqttClient.connect(MQTT_CLIENT_ID)) {
@@ -219,5 +229,14 @@ DoorState calculateDoorState(DoorSensorsReading doorSensorReading, DoorState las
         return CLOSED;
     } else {
         return STOPPED;
+    }
+}
+
+void readAndPublishOutdoorTemp() {
+    if (!readAndPublishOutdoorTempDelay.isRunning() || readAndPublishOutdoorTempDelay.justFinished()) {
+        tempSensors.requestTemperatures();
+        float temp = tempSensors.getTempCByIndex(0);
+        mqttClient.publish(GARAGE_OUTDOOR_TEMPERATURE_TOPIC, String(temp).c_str(), true);
+        readAndPublishOutdoorTempDelay.start(PUBLISH_OUTDOOR_TEMPERATURE_INTERVAL_MS);
     }
 }

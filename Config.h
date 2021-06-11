@@ -38,9 +38,13 @@
 
 #define GARAGE_DOOR_OPENER_CONTROL_TOPIC "home/garage/door-opener/control"
 #define GARAGE_DOOR_CURRENT_STATE_TOPIC "home/garage/door/current-state"
+#define GARAGE_OUTDOOR_TEMPERATURE_TOPIC "home/garage/outdoor-temperature"
 
 #define MQTT_RECOVER_TIME_MS 10000 // Wait time after a failed connection attempt
 #define MQTT_REPUBLISH_INTERVAL_MS 10000
+
+// Other Settings
+#define PUBLISH_OUTDOOR_TEMPERATURE_INTERVAL_MS 10000
 
 // TLS settings
 const char* root_ca_certificate = \
